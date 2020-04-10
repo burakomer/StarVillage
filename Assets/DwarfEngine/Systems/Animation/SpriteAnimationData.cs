@@ -16,23 +16,7 @@ namespace DwarfEngine
     }
 
     [Serializable]
-    public class SpriteAnimation
-    {
-        public SpriteAnimationData animationData;
-        public List<SpriteAnimationEvent> eventList;
-
-        public Dictionary<int, UnityEvent> events;
-    }
-
-    [Serializable]
-    public class SpriteAnimationEvent
-    {
-        public int keyframe;
-        public UnityEvent @event;
-    }
-
-    [Serializable]
-    public class SAList : ReorderableArray<SpriteAnimation>
+    public class SAList : ReorderableArray<SpriteAnimationData>
     {
 
     }

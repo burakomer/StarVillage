@@ -10,13 +10,14 @@ namespace DwarfEngine
     public abstract class CharacterBrain : MonoBehaviour
     {
         public bool active;
+        public CharacterInputs inputs;
         [HideInInspector] public Character character;
-        //[HideInInspector] public InputManager inputManager;
 
         private void Awake()
         {
-            SetInputManager();
+            inputs = new CharacterInputs();
             PreInit();
+            SetInputs();
         }
 
         private void Start()
@@ -27,23 +28,15 @@ namespace DwarfEngine
             Init();
         }
 
-        private void Update()
-        {
-            if (active)
-            {
-                UpdateBrain();
-            }
-        }
-
         #region Overwritable Methods
 
         /// <summary>
         /// Responsible of setting the input source of the brain.
         /// </summary>
-        protected abstract void SetInputManager();
+        protected abstract void SetInputs();
 
         /// <summary>
-        /// Called in Awake.
+        /// Called in Awake. Initialize specific input providers here.
         /// </summary>
         protected virtual void PreInit()
         {

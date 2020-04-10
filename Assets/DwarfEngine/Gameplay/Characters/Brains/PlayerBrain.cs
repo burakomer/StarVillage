@@ -1,65 +1,31 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace DwarfEngine
 {
     public class PlayerBrain : CharacterBrain
     {
+        public PlayerControls playerControls;
         public PlayerState currentState;
 
         //private CharacterMovement _movement;
         //private CharacterWeaponUser _weaponUser;
 
-        protected override void Init()
+        protected override void PreInit()
         {
-            //_movement = GetComponent<CharacterMovement>();
-            //_weaponUser = GetComponent<CharacterWeaponUser>();
-
-            currentState = PlayerState.Running;
+            playerControls = new PlayerControls();
         }
 
-        protected override void SetInputManager()
+        protected override void SetInputs()
         {
-            //inputManager = GameManager.Instance.InputManager;
-        }
-
-        protected override void UpdateBrain()
-        {
-            // From any state
-            // ...
-
-            // From a specific state
-            //switch (currentState)
-            //{
-            //    case PlayerState.Running:
-            //        if (_movement.actualVelocity.y < -0.1f)
-            //        {
-            //            SetState(PlayerState.Falling);
-            //        }
-            //        else if (_movement.actualVelocity.y > 0.1f)
-            //        {
-            //            SetState(PlayerState.Jumping);
-            //        }
-            //        break;
-            //    case PlayerState.Shooting:
-            //
-            //        break;
-            //    case PlayerState.Jumping:
-            //        if (_movement.actualVelocity.y < -0.1f)
-            //        {
-            //            SetState(PlayerState.Falling);
-            //        }
-            //        break;
-            //    case PlayerState.Falling:
-            //        if (_movement.actualVelocity.y > 0.1f)
-            //        {
-            //            SetState(PlayerState.Jumping);
-            //        }
-            //        if (_movement._controller2d.collisions.below)
-            //        {
-            //            SetState(PlayerState.Running);
-            //        }
-            //        break;
-            //}
+            inputs.movement = this.UpdateAsObservable()
+                .Select(_ => playerControls.Controls.Move.ReadValue<Vector2>());
+            inputs.look = this.UpdateAsObservable()
+                .Select(_ => playerControls.Controls.Rotate.ReadValue<Vector2>());
+            inputs.attack = this.UpdateAsObservable()
+                .Select(_ => playerControls.Controls.Attack.triggered);
         }
 
         public void SetState(PlayerState newState)
@@ -121,6 +87,16 @@ namespace DwarfEngine
                 default:
                     break;
             }
+        }
+
+        private void OnEnable()
+        {
+            playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerControls.Disable();
         }
     }
 

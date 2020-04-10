@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UniRx;
 
 namespace DwarfEngine
 {
@@ -11,63 +12,80 @@ namespace DwarfEngine
     public class SpriteAnimator : MonoBehaviour
     {
         [Reorderable] public SAList animations;
-        public SpriteAnimation currentAnimation;
+
+        /// <summary>
+        /// Provides the current playing animation name and the frame it's on. Enables executing actions at specific animations and frames.
+        /// </summary>
+        public Subject<(string animationName, int currentFrame)> currentAnimation { get; private set; }
 
         private Dictionary<string, int> animationNames;
+        private SpriteAnimationData currentAnimationData;
         private SpriteRenderer _renderer;
-        private Coroutine _animationCoroutine;
+        
+        private IDisposable animationDisposable;
 
         private void Start()
         {
             _renderer = GetComponent<SpriteRenderer>();
 
             animationNames = new Dictionary<string, int>();
-            foreach (SpriteAnimation animation in animations)
+            foreach (SpriteAnimationData animation in animations)
             {
-                animationNames.Add(animation.animationData.animName, animations.IndexOf(animation)); // Add animation name to dictionary for easy access
-                animation.events = new Dictionary<int, UnityEvent>(); // Create the event dictionary of the animation
-                foreach (SpriteAnimationEvent animationEvent in animation.eventList)
-                {
-                    animation.events.Add(animationEvent.keyframe, animationEvent.@event); // and populate it with the events from the inspector list
-                }
+                // Add animation name to dictionary for easy access
+                animationNames.Add(animation.animName, animations.IndexOf(animation)); 
             }
 
-            currentAnimation = animations[0]; // Set the first animation in the list as the entrance animation
-            _animationCoroutine = StartCoroutine(PlayCurrentAnimation()); // Start animation
+            currentAnimationData = animations[0]; // Set the first animation in the list as the entrance animation
+            currentAnimation = new Subject<(string animationName, int currentFrame)>();
+            Play(0);
         }
 
         public void Play(string animationName)
         {
-            //Debug.Log((animationNames != null) + " " + gameObject.name);
             if (!animationNames.ContainsKey(animationName))
             {
+                Debug.LogError("Invalid animation name");
                 return;
             }
 
-            if (_animationCoroutine != null)
+            if (animationDisposable != null)
             {
-                StopCoroutine(_animationCoroutine); 
+                animationDisposable.Dispose(); 
             }
-            currentAnimation = animations[animationNames[animationName]];
-            _animationCoroutine = StartCoroutine(PlayCurrentAnimation());
+
+            currentAnimationData = animations[animationNames[animationName]];
+
+            animationDisposable = Observable
+                .FromCoroutine<(string animationName, int currentFrame)>(observer => PlayCurrentAnimation(observer))
+                .Subscribe(currentAnimation)
+                .AddTo(this);
         }
 
-        private IEnumerator PlayCurrentAnimation()
+        public void Play(int animationIndex)
+        {
+            if (animationIndex < 0 || animationIndex >= animations.Length)
+            {
+                Debug.LogError("Invalid animation index");
+                return;
+            }
+
+            Play(animations[animationIndex].animName);
+        }
+
+        private IEnumerator PlayCurrentAnimation(IObserver<(string animationName, int currentFrame)> observer)
         {
             do
             {
-                for (int i = 0; i < currentAnimation.animationData.sprites.Count; i++)
+                for (int i = 0; i < currentAnimationData.sprites.Count; i++)
                 {
-                    _renderer.sprite = currentAnimation.animationData.sprites[i];
-                    if (currentAnimation.events.ContainsKey(i))
-                    {
-                        currentAnimation.events[i]?.Invoke();
-                    }
-                    yield return new WaitForSeconds(1f / currentAnimation.animationData.framesPerSecond);
+                    _renderer.sprite = currentAnimationData.sprites[i];
+                    observer.OnNext((currentAnimationData.animName, i));
+                    
+                    yield return new WaitForSeconds(1f / currentAnimationData.framesPerSecond);
                 } 
-            } while (currentAnimation.animationData.loop);
+            } while (currentAnimationData.loop);
 
-            _animationCoroutine = null;
+            observer.OnCompleted();
         }
     }
 }

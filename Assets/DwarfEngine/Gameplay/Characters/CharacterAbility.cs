@@ -25,33 +25,33 @@ namespace DwarfEngine
             Init();
         }
 
-        private void Update()
-        {
-            if (_character.isAlive)
-            {
-                if (active)
-                {
-                    UpdateAbility();
-                    if (_character.model.animators.Length > 0 ) UpdateAnimator();
-                }
-            }
-        }
+        //private void Update()
+        //{
+        //    if (_character.isAlive)
+        //    {
+        //        if (active)
+        //        {
+        //            UpdateAbility();
+        //            if (_character.model.animators.Length > 0 ) UpdateAnimator();
+        //        }
+        //    }
+        //}
 
-        private void FixedUpdate()
-        {
-            if (_character.isAlive)
-            {
-                if (active)
-                {
-                    UpdateAbilityFixed();
-                }
-            }
-        }
+        //private void FixedUpdate()
+        //{
+        //    if (_character.isAlive)
+        //    {
+        //        if (active)
+        //        {
+        //            UpdateAbilityFixed();
+        //        }
+        //    }
+        //}
 
-        private void OnDisable()
-        {
-            //_character.brain.inputManager.RemoveListeners(this, this, this);
-        }
+        //private void OnDisable()
+        //{
+        //    //_character.brain.inputManager.RemoveListeners(this, this, this);
+        //}
 
         #region Virtual Methods
 
