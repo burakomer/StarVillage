@@ -6,18 +6,11 @@ using UnityEngine.Events;
 
 namespace DwarfEngine
 {
-    [CreateAssetMenu(fileName = "New SpriteAnimData", menuName = "TouchDevUltimate/Sprite Animations/Sprite Animation Data")]
-    public class SpriteAnimationData : ScriptableObject
+    [CreateAssetMenu(fileName = "New SpriteAnimData", menuName = "Sprite Animations/Sprite Animation Data")]
+    public class SpriteAnimationData : BaseSpriteAnimatorNode
     {
-        public string animName;
         public int framesPerSecond;
         public bool loop;
         public List<Sprite> sprites;
-    }
-
-    [Serializable]
-    public class SAList : ReorderableArray<SpriteAnimationData>
-    {
-
     }
 }

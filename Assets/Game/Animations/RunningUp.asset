@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721d51122a6c5174391d3163a5b2cad1, type: 3}
+  m_Name: RunningUp
+  m_EditorClassIdentifier: 
+  nodeName: RunningUp
+  framesPerSecond: 8
+  loop: 1
+  sprites:
+  - {fileID: -4522731149510019502, guid: 35bad320548e2ec4a828b94ab0d99081, type: 3}
+  - {fileID: -3909304355900387050, guid: 35bad320548e2ec4a828b94ab0d99081, type: 3}
+  - {fileID: -4608814311081262565, guid: 35bad320548e2ec4a828b94ab0d99081, type: 3}
+  - {fileID: 2216087602722939322, guid: 35bad320548e2ec4a828b94ab0d99081, type: 3}

@@ -1,14 +1,16 @@
 ﻿using System;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace DwarfEngine
 {
-    public abstract class CharacterAbility : MonoBehaviour//, IButtonListener, IJoystickListener, IGestureListener
+    public abstract class CharacterAbility : MonoBehaviour
     {
         public bool active = true;
         [Space]
 
-        protected Character _character;
+        private Character _character;
 
         private void Awake()
         {
@@ -19,39 +21,26 @@ namespace DwarfEngine
 
         private void Start()
         {
-            // Connect ability input listeners to the brain
-            //_character.brain.inputManager.AddListeners(this, this, this);
-
+            SetInputLogic(_character.brain.inputs);
+            SetAnimatorLogic(_character.model);
             Init();
+
+            this.UpdateAsObservable()
+                .Where(_ => _character.isAlive)
+                .Subscribe(_ =>
+                {
+                    UpdateAbility();
+                })
+                .AddTo(this);
+
+            this.FixedUpdateAsObservable()
+                .Where(_ => _character.isAlive)
+                .Subscribe(_ =>
+                {
+                    UpdateAbilityFixed();
+                })
+                .AddTo(this);
         }
-
-        //private void Update()
-        //{
-        //    if (_character.isAlive)
-        //    {
-        //        if (active)
-        //        {
-        //            UpdateAbility();
-        //            if (_character.model.animators.Length > 0 ) UpdateAnimator();
-        //        }
-        //    }
-        //}
-
-        //private void FixedUpdate()
-        //{
-        //    if (_character.isAlive)
-        //    {
-        //        if (active)
-        //        {
-        //            UpdateAbilityFixed();
-        //        }
-        //    }
-        //}
-
-        //private void OnDisable()
-        //{
-        //    //_character.brain.inputManager.RemoveListeners(this, this, this);
-        //}
 
         #region Virtual Methods
 
@@ -65,6 +54,16 @@ namespace DwarfEngine
 
         }
 
+        protected virtual void SetInputLogic(CharacterInputs inputs)
+        {
+
+        }
+
+        protected virtual void SetAnimatorLogic(SpriteModel model)
+        {
+
+        }
+
         protected virtual void UpdateAbility()
         {
 
@@ -74,12 +73,6 @@ namespace DwarfEngine
         {
 
         }
-
-        protected virtual void UpdateAnimator()
-        {
-
-        }
-
         #endregion
     }
 }

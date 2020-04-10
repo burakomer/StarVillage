@@ -8,7 +8,7 @@ namespace DwarfEngine
     {
         [Expandable] public BehaviourTree behaviourTree;
 
-        protected override void SetInputs()
+        protected override void SetInputSources()
         {
             //inputManager = GetComponent<InputManager>();
         }

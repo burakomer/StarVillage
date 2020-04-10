@@ -18,14 +18,21 @@ namespace DwarfEngine
             playerControls = new PlayerControls();
         }
 
-        protected override void SetInputs()
+        protected override void SetInputSources()
         {
             inputs.movement = this.UpdateAsObservable()
                 .Select(_ => playerControls.Controls.Move.ReadValue<Vector2>());
+            
             inputs.look = this.UpdateAsObservable()
                 .Select(_ => playerControls.Controls.Rotate.ReadValue<Vector2>());
+            
             inputs.attack = this.UpdateAsObservable()
                 .Select(_ => playerControls.Controls.Attack.triggered);
+        }
+
+        protected override void Init()
+        {
+            
         }
 
         public void SetState(PlayerState newState)

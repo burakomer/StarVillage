@@ -8,9 +8,9 @@ public class CharacterMovement : CharacterAbility
 {
     private Vector3 movement;
 
-    protected void Start()
+    protected override void SetInputLogic(CharacterInputs inputs)
     {
-        _character.brain.inputs.movement
+        inputs.movement
             .Where(v => v != Vector2.zero)
             .Subscribe(v =>
             {
@@ -19,15 +19,7 @@ public class CharacterMovement : CharacterAbility
             })
             .AddTo(this);
 
-        _character.brain.inputs.look
-            .Where(v => v != Vector2.zero)
-            .Subscribe(v =>
-            {
-                transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, v)); 
-            })
-            .AddTo(this);
-
-        _character.brain.inputs.attack
+        inputs.attack
             .Where(t => t)
             .Subscribe(_ => Debug.Log("Attack button pressed!"))
             .AddTo(this);

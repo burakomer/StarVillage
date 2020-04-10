@@ -111,7 +111,7 @@ namespace DwarfEngine
         }
 
         /// <summary>
-        /// What to do after the object is killed. For example, disable the collider so it can't be interactable anymore.
+        /// Override this to implement different effects when the character is killed. If destroyOnDeath is set to true, this might not be needed.
         /// </summary>
         protected virtual void OnKillBeforeDestroyed()
         {

@@ -8,7 +8,7 @@ namespace DwarfEngine
     {
         public SpriteAnimator[] animators;
 
-        private void Start()
+        private void OnEnable()
         {
             animators = GetComponentsInChildren<SpriteAnimator>(false);
         }
@@ -18,6 +18,14 @@ namespace DwarfEngine
             foreach (SpriteAnimator animator in animators)
             {
                 animator.Play(animationName);
+            }
+        }
+
+        public void PlayAnimation(string blendName, IObservable<Vector2> blendParameter)
+        {
+            foreach (SpriteAnimator animator in animators)
+            {
+                animator.Play(blendName, blendParameter);
             }
         }
     }

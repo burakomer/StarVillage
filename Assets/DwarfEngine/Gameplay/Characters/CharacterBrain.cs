@@ -17,7 +17,7 @@ namespace DwarfEngine
         {
             inputs = new CharacterInputs();
             PreInit();
-            SetInputs();
+            SetInputSources();
         }
 
         private void Start()
@@ -33,7 +33,7 @@ namespace DwarfEngine
         /// <summary>
         /// Responsible of setting the input source of the brain.
         /// </summary>
-        protected abstract void SetInputs();
+        protected abstract void SetInputSources();
 
         /// <summary>
         /// Called in Awake. Initialize specific input providers here.
