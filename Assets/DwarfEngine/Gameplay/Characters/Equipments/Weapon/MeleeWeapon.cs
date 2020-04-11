@@ -6,6 +6,9 @@ namespace DwarfEngine
 {
     public class MeleeWeapon : Weapon
     {
-
+        protected override void Shoot()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

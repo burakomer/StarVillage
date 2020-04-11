@@ -8,7 +8,7 @@ namespace DwarfEngine
         [Header("Properties")]
         public string characterName;
         public CharacterType characterType;
-        public bool isAlive => health.isAlive;
+        public bool isAlive => health.isAlive.Value;
 
         #region Components
 

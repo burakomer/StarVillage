@@ -9,6 +9,7 @@ namespace DwarfEngine
 	[CreateAssetMenu(fileName = "New SpriteBlendData", menuName = "Sprite Animations/Sprite Blend Data")]
 	public class SpriteBlendData : BaseSpriteAnimatorNode
 	{
+		public string parameterName;
 		[Reorderable] public SBNList blendSpace;
 	} 
 

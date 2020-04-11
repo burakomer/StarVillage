@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace DwarfEngine
 {
-    public class Health : MonoBehaviour
+    public class Health : MonoBehaviour, IProgressSource
     {
-        public int currentHealth { get; protected set; }
-        public bool isAlive { get; protected set; }
+        public IntReactiveProperty currentHealth;
+        public Subject<float> currentHealthNormalized { get; private set; }
+        public ReadOnlyReactiveProperty<bool> isAlive { get; protected set; }
 
         [Header("Properties")]
-        public bool invincible;
+        [SerializeField] private bool invincible;
         public int maximumHealth;
         public GameObject model;
 
@@ -20,84 +22,82 @@ namespace DwarfEngine
         public bool destroyOnDeath;
         public float timeBeforeDestroy = 5f;
 
-        [Header("Feedbacks")]
-        public bool displayDamagePopup;
+        //[Header("Feedbacks")]
+        //public bool displayDamagePopup;
+        //private ObjectPooler _pooler;
 
         [Header("Health Bar")]
         public bool hasHealthBar;
-        public string TargetBar;
-        public Vector3 barOffset;
-
-        [Header("Animator Parameters")]
-        [Tooltip("Bool")] public string aliveParameter;
-        [Tooltip("Trigger")] public string damagedParameter;
-
-        protected Animator _animator;
-        protected ObjectPooler _pooler;
+        public string _targetBar;
+        public Vector3 _barOffset;
+        public string targetBar => _targetBar;
+        public Vector3 barOffset => _barOffset;
 
         protected virtual void Start()
         {
-            isAlive = true;
+            currentHealth = new IntReactiveProperty(maximumHealth); // Set current health to max health
 
-            _animator = model.GetComponent<Animator>();
+            isAlive = currentHealth
+                .Select(health => health <= 0) // isAlive is true when health is bigger than 0, false otherwise
+                .ToReadOnlyReactiveProperty();
 
-            currentHealth = maximumHealth;
-            
-            // Text popup initialization
-            if (displayDamagePopup)
+            if (hasHealthBar)
             {
-                _pooler = gameObject.AddComponent<ObjectPooler>();
-                _pooler.objectToPool = GameAssets.Instance.GenericTextPopup.gameObject;
-                _pooler.amountToPool = 3;
-                _pooler.expandInNeed = true;
-                _pooler.Initialization(true);
+                UIManager.Instance.SetProgressBar(gameObject, this, currentHealthNormalized); // Set up the health bar
             }
+
+            // TODO : Resolve
+            //if (displayDamagePopup)
+            //{
+            //    _pooler = gameObject.AddComponent<ObjectPooler>();
+            //    _pooler.objectToPool = GameAssets.Instance.GenericTextPopup.gameObject;
+            //    _pooler.amountToPool = 3;
+            //    _pooler.expandInNeed = true;
+            //    _pooler.Initialization(true);
+            //}
         }
 
-        /// <summary>
-        /// Inflicts damage.
-        /// </summary>
-        /// <param name="damageAmount">Amount to substract from currentHealth</param>
-        /// <param name="invincibilityDuration">Duration of invincibility.</param>
-        /// <param name="textProperties">Properties of the text popup.</param>
-        /// <param name="damageDealer">Object of the damage dealer.</param>
-        public virtual void Damage(int damageAmount, float invincibilityDuration, 
-            (bool isCritical, Color color) textProperties, GameObject damageDealer = null)
+        public virtual void Heal(int healAmount)
+        {
+            currentHealth.Value = Mathf.Min(currentHealth.Value + healAmount, maximumHealth);
+        }
+
+        public virtual void Damage(int damageAmount, float invincibilityDuration, GameObject damageDealer = null)
         {
             if (invincible)
             {
                 return;
             }
 
-            if (currentHealth <= 0)
+            if (currentHealth.Value <= 0)
             {
                 return;
             }
 
             //gameObject.transform.position += Vector3.zero;
-            currentHealth -= damageAmount;
+            currentHealth.Value -= damageAmount;
 
-            if (displayDamagePopup)
-            {
-                TextPopup popup = _pooler.GetPooledObject<TextPopup>();
-                if (popup != null)
-                {
-                    popup.Setup(
-                        "-" + damageAmount.ToString(),
-                        transform.position + new Vector3(0f, /* TODO : Position the damage popup */ + 1f, 0f),
-                        textProperties.color,
-                        textProperties.isCritical,
-                        textProperties.isCritical ? 1.5f : 1
-                        );
-                    popup.gameObject.SetActive(true);
-                }
-            }
+            // TODO : Resolve
+            //if (displayDamagePopup)
+            //{
+            //    TextPopup popup = _pooler.GetPooledObject<TextPopup>();
+            //    if (popup != null)
+            //    {
+            //        popup.Setup(
+            //            "-" + damageAmount.ToString(),
+            //            transform.position + new Vector3(0f, /* TODO : Position the damage popup */ + 1f, 0f),
+            //            textProperties.color,
+            //            textProperties.isCritical,
+            //            textProperties.isCritical ? 1.5f : 1
+            //            );
+            //        popup.gameObject.SetActive(true);
+            //    }
+            //}
 
-            if (hasHealthBar) UIManager.Instance.BarDamage(TargetBar, GetHealthNormalized());
+            // TODO : Resolve
+            //_animator?.SetTrigger(damagedParameter);
 
-            _animator?.SetTrigger(damagedParameter);
-            
-            if (currentHealth <= 0)
+            if (currentHealth.Value <= 0)
             {
                 Kill();
                 return;
@@ -106,7 +106,6 @@ namespace DwarfEngine
             if (invincibilityDuration > 0)
             {
                 StartCoroutine(Invincibility(invincibilityDuration));
-                //if (flash) StartCoroutine(FlashModel());
             }
         }
 
@@ -125,25 +124,12 @@ namespace DwarfEngine
         {
             OnKill?.Invoke();
 
-            isAlive = false;
-
             OnKillBeforeDestroyed();
 
-            _animator.SetBool(aliveParameter, isAlive);
             if (destroyOnDeath)
             {
                 Destroy(gameObject, timeBeforeDestroy);
             }
-        }
-
-        /// <summary>
-        /// Heals the object.
-        /// </summary>
-        /// <param name="healAmount">Amount to add to the currentHealth.</param>
-        public virtual void Heal(int healAmount)
-        {
-            currentHealth = Mathf.Min(currentHealth + healAmount, maximumHealth);
-            if (hasHealthBar) UIManager.Instance.BarHeal(TargetBar, GetHealthNormalized());
         }
 
         public void DisableDamage()
@@ -169,19 +155,7 @@ namespace DwarfEngine
 
         public float GetHealthNormalized()
         {
-            return (float)currentHealth / maximumHealth;
+            return (float)currentHealth.Value / maximumHealth;
         }
-
-        //public IEnumerator FlashModel()
-        //{
-        //    while (invincible)
-        //    {
-        //        _renderer.enabled = false;
-        //        yield return new WaitForSeconds(0.1f);
-        //        _renderer.enabled = true;
-        //        yield return new WaitForSeconds(0.1f);
-        //    }
-        //    _renderer.enabled = true;
-        //}
     }
 }

@@ -6,11 +6,20 @@ namespace DwarfEngine
 {
     public class SpriteModel : MonoBehaviour
     {
-        public SpriteAnimator[] animators;
+        public string animatorTag; // Only get the animators that have this tag
+        public List<SpriteAnimator> animators;
 
         private void OnEnable()
         {
-            animators = GetComponentsInChildren<SpriteAnimator>(false);
+            animators = new List<SpriteAnimator>();
+            foreach(SpriteAnimator animator in GetComponentsInChildren<SpriteAnimator>(false))
+            {
+                if (string.IsNullOrEmpty(animatorTag) && !animator.CompareTag(animatorTag))
+                {
+                    return;
+                }
+                animators.Add(animator);
+            }
         }
 
         public void PlayAnimation(string animationName)
@@ -21,11 +30,11 @@ namespace DwarfEngine
             }
         }
 
-        public void PlayAnimation(string blendName, IObservable<Vector2> blendParameter)
+        public void AddBlendParameter(string parameterName, IObservable<Vector2> parameter)
         {
             foreach (SpriteAnimator animator in animators)
             {
-                animator.Play(blendName, blendParameter);
+                animator.AddBlendParameter(parameterName, parameter);
             }
         }
     }

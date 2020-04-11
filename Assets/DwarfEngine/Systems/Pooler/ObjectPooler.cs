@@ -7,15 +7,15 @@ namespace DwarfEngine
     /// <summary>
     /// An object pooler for GameObjects.
     /// </summary>
-    public class ObjectPooler : MonoBehaviour
+    public class ObjectPooler : MonoBehaviour, IObjectPooler
     {
         public event Action<GameObject> UpdatePool;
-        public GameObject objectToPool;
-        public int amountToPool;
-        public bool expandInNeed;
+        
+        public GameObject objectToPool { get; set; }
+        public int amountToPool { get; set; }
+        public bool expandInNeed { get; set; }
 
         public List<GameObject> pooledObjects;
-        
         private GameObject _container;
 
         public void Initialization(bool setParentToThis, int layer = 0)

@@ -1,5 +1,4 @@
-﻿using Malee;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace DwarfEngine
     [RequireComponent(typeof(SpriteRenderer))]
     public class SpriteAnimator : MonoBehaviour
     {
-        [Reorderable] public SANList animatorNodes;
+        public SpriteAnimatorData animatorData;
 
         /// <summary>
         /// Provides the current playing animation name and the frame it's on. Enables executing actions at specific animations and frames.
@@ -19,6 +18,10 @@ namespace DwarfEngine
 
         private Dictionary<string, SpriteAnimationData> animationDatas;
         private Dictionary<string, SpriteBlendData> blendDatas;
+        private Dictionary<string, IObservable<Vector2>> blendParameterDictionary;
+
+        private SpriteAnimatorNode currentNode;
+
         private SpriteAnimationData currentAnimationData;
         private SpriteRenderer _renderer;
         
@@ -31,36 +34,62 @@ namespace DwarfEngine
 
             animationDatas = new Dictionary<string, SpriteAnimationData>();
             blendDatas = new Dictionary<string, SpriteBlendData>();
+            blendParameterDictionary = new Dictionary<string, IObservable<Vector2>>();
 
-            foreach (BaseSpriteAnimatorNode animatorNode in animatorNodes)
+            foreach (SpriteAnimatorNode animatorNode in animatorData.animatorNodes)
             {
-                if (animatorNode is SpriteBlendData)
+                if (animatorNode.node is SpriteBlendData)
                 {
-                    blendDatas.Add(animatorNode.nodeName, (SpriteBlendData)animatorNode);
-                    foreach (SpriteBlendNode blendNode in ((SpriteBlendData)animatorNode).blendSpace)
+                    blendDatas.Add(animatorNode.node.nodeName, (SpriteBlendData)animatorNode.node);
+                    foreach (SpriteBlendNode blendNode in ((SpriteBlendData)animatorNode.node).blendSpace)
                     {
                         animationDatas.Add(blendNode.animationData.nodeName, blendNode.animationData);
                     }
                 }
-                else if (animatorNode is SpriteAnimationData)
+                else if (animatorNode.node is SpriteAnimationData)
                 {
                     // Add animation name to dictionary for easy access
-                    animationDatas.Add(animatorNode.nodeName, (SpriteAnimationData)animatorNode); 
+                    animationDatas.Add(animatorNode.node.nodeName, (SpriteAnimationData)animatorNode.node); 
                 }
             }
 
+            foreach (string parameterName in animatorData.blendParameters)
+            {
+                blendParameterDictionary.Add(parameterName, null);
+            }
+
             currentAnimation = new ReactiveProperty<(string animationName, int currentFrame)>((string.Empty, 0));
-            
-            //currentAnimationData = animations[0]; // Set the first animation in the list as the entrance animation
-            //Play(0);
+            currentNode = animatorData.animatorNodes[0]; // Set the first node as default node
+
+            //Play(currentNode.node.nodeName);
+        }
+
+        public void Play(string nodeName)
+        {
+            if (currentNode != null)
+            {
+                if (currentNode != animatorData.animatorNodes[0] && !currentNode.transitions.Contains(nodeName)) // If the current node isn't the default node and current node doesn't have the correct transition
+                {
+                    Debug.LogError("Transition to " + nodeName + " from " + currentNode.node.nodeName + " doesn't exist!");
+                    return;
+                }
+            }
+
+            if (blendDatas.ContainsKey(nodeName))
+            {
+                Debug.Log(nodeName);
+                Play(nodeName, blendDatas[nodeName].parameterName);
+            }
+            else if (animationDatas.ContainsKey(nodeName))
+            {
+                Play(nodeName, 0);
+            }
         }
 
         /// <summary>
-        /// Select a blend space to play.
+        /// Start playing a blend space.
         /// </summary>
-        /// <param name="blendName">Name of the blend space.</param>
-        /// <param name="blendParameter">Parameter to use for blending.</param>
-        public void Play(string blendName, IObservable<Vector2> blendParameter)
+        private void Play(string blendName, string blendParameter)
         {
             if (!blendDatas.ContainsKey(blendName))
             {
@@ -68,13 +97,27 @@ namespace DwarfEngine
                 return;
             }
 
+            if (!blendParameterDictionary.ContainsKey(blendParameter))
+            {
+                Debug.LogError("Invalid blend parameter!");
+                return;
+            }
+
+            if (blendParameterDictionary[blendParameter] == null)
+            {
+                Debug.LogError("Observable Vector2 not initialized!");
+                return;
+            }
+            
             if (blendDisposable != null)
             {
                 blendDisposable.Dispose();
             }
 
+            currentNode = animatorData.animatorNodes.Find(n => n.node.nodeName == blendName);
+
             SpriteBlendData blendData = blendDatas[blendName];
-            blendDisposable = blendParameter
+            blendDisposable = blendParameterDictionary[blendParameter]
                 .Subscribe(v =>
                 {
                     ProcessBlend(blendData, v);
@@ -108,18 +151,10 @@ namespace DwarfEngine
             }
         }
 
-        public void Play(int animationIndex)
-        {
-            if (animationIndex < 0 || animationIndex >= animatorNodes.Length)
-            {
-                Debug.LogError("Invalid animation index");
-                return;
-            }
-
-            Play(animatorNodes[animationIndex].nodeName);
-        }
-
-        public void Play(string animationName, int startingFrame = 0, bool isBlendAnimation = false)
+        /// <summary>
+        /// Play an animation
+        /// </summary>
+        private void Play(string animationName, int startingFrame = 0, bool isBlendAnimation = false)
         {
             if (!animationDatas.ContainsKey(animationName))
             {
@@ -133,10 +168,15 @@ namespace DwarfEngine
                 animationDisposable.Dispose();
             }
 
-            if (!isBlendAnimation && blendDisposable != null)
+            if (!isBlendAnimation)
             {
-                blendDisposable.Dispose();
-            } 
+                if (blendDisposable != null)
+                {
+                    blendDisposable.Dispose();
+                }
+                currentNode = animatorData.animatorNodes.Find(n => n.node.nodeName == animationName);
+            }
+
             #endregion
 
             currentAnimationData = animationDatas[animationName]; // Set the current animation data to the new one
@@ -171,6 +211,18 @@ namespace DwarfEngine
             } while (currentAnimationData.loop);
 
             observer.OnCompleted();
+        }
+
+        public void AddBlendParameter(string parameterName, IObservable<Vector2> parameter)
+        {
+            if (blendParameterDictionary.ContainsKey(parameterName))
+            {
+                blendParameterDictionary[parameterName] = parameter;
+            }
+            else
+            {
+                blendParameterDictionary.Add(parameterName, parameter);
+            }
         }
     }
 

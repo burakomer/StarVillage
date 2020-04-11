@@ -8,9 +8,8 @@ namespace DwarfEngine
     public abstract class CharacterAbility : MonoBehaviour
     {
         public bool active = true;
-        [Space]
 
-        private Character _character;
+        protected Character _character;
 
         private void Awake()
         {
@@ -22,7 +21,8 @@ namespace DwarfEngine
         private void Start()
         {
             SetInputLogic(_character.brain.inputs);
-            SetAnimatorLogic(_character.model);
+            SetAnimatorParameters(_character.model);
+            SetAnimatorTransitions(_character.model);
             Init();
 
             this.UpdateAsObservable()
@@ -59,7 +59,18 @@ namespace DwarfEngine
 
         }
 
-        protected virtual void SetAnimatorLogic(SpriteModel model)
+        /// <summary>
+        /// Set animator parameters here. To set transitions, use SetAnimatorTransitions()
+        /// </summary>
+        protected virtual void SetAnimatorParameters(SpriteModel model)
+        {
+
+        }
+
+        /// <summary>
+        /// Set animator transitions here. To set parameters, use SetAnimatorParameters()
+        /// </summary>
+        protected virtual void SetAnimatorTransitions(SpriteModel model)
         {
 
         }

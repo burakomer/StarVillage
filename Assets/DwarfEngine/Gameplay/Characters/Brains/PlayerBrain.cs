@@ -10,8 +10,8 @@ namespace DwarfEngine
         public PlayerControls playerControls;
         public PlayerState currentState;
 
-        //private CharacterMovement _movement;
-        //private CharacterWeaponUser _weaponUser;
+        //[Header("Animator Parameters")]
+        //public string 
 
         protected override void PreInit()
         {
@@ -22,9 +22,22 @@ namespace DwarfEngine
         {
             inputs.movement = this.UpdateAsObservable()
                 .Select(_ => playerControls.Controls.Move.ReadValue<Vector2>());
-            
+
             inputs.look = this.UpdateAsObservable()
-                .Select(_ => playerControls.Controls.Rotate.ReadValue<Vector2>());
+                .Select(_ =>
+                {
+                    Vector2 lookInput = playerControls.Controls.Rotate.ReadValue<Vector2>();
+                    if (lookInput != Vector2.zero)
+                    {
+                        return lookInput;
+                    }
+                    else
+                    {
+                        return playerControls.Controls.Move.ReadValue<Vector2>();
+                    }
+                });
+                
+                //.Select(_ => playerControls.Controls.Rotate.ReadValue<Vector2>());
             
             inputs.attack = this.UpdateAsObservable()
                 .Select(_ => playerControls.Controls.Attack.triggered);

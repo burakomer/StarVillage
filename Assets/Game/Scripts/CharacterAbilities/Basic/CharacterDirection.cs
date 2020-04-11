@@ -7,8 +7,9 @@ using UniRx.Triggers;
 
 public class CharacterDirection : CharacterAbility
 {
+    public string animatorParamName;
     public ReactiveProperty<Vector2> facingDirection { get; private set; }
-
+    
     protected override void SetInputLogic(CharacterInputs inputs)
     {
         facingDirection = new ReactiveProperty<Vector2>();
@@ -21,8 +22,8 @@ public class CharacterDirection : CharacterAbility
             .AddTo(this);
     }
 
-    protected override void SetAnimatorLogic(SpriteModel model)
+    protected override void SetAnimatorParameters(SpriteModel model)
     {
-        model.PlayAnimation("Running", facingDirection);
+        model.AddBlendParameter(animatorParamName, facingDirection);
     }
 }

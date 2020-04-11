@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,10 @@ namespace DwarfEngine
     /// <summary>
     /// A UI element that displays the normalized graphical representation of a progress.
     /// </summary>
-    public class ProgressBar : MonoBehaviour
+    public class ProgressBar : MonoBehaviour, IObserver<float>
     {
         [Header("Properties")]
-        public new string name;
+        public string barName;
         public bool hideAtFull;
 
         [SerializeField] private Image frontBar;
@@ -22,11 +23,8 @@ namespace DwarfEngine
         private float damageBarFadeTimer;
         private bool damageBarInProgress = false;
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
-            UIManager.Instance.OnBarDamage += OnBarDamage;
-            UIManager.Instance.OnBarHeal += OnBarHeal;
-
             if (hideAtFull)
             {
                 frontBar.color = new Color(1, 1, 1, 0);
@@ -35,40 +33,36 @@ namespace DwarfEngine
             }
         }
 
-        protected virtual void OnDisable()
+        protected virtual void OnBarDamage(float damageNormalized)
         {
-            UIManager.Instance.OnBarDamage -= OnBarDamage;
-            UIManager.Instance.OnBarHeal -= OnBarHeal;
-        }
-
-        protected virtual void OnBarDamage(string name, float damageNormalized)
-        {
-            if (this.name == name)
+            if (frontBar.color.a < 0.05f)
             {
-                if (frontBar.color.a < 0.05f)
-                {
-                    frontBar.color = new Color(1, 1, 1, 1);
-                    delayedBar.color = new Color(1, 1, 1, 1);
-                    background.color = new Color(1, 1, 1, 1);
-                }
+                frontBar.color = new Color(1, 1, 1, 1);
+                delayedBar.color = new Color(1, 1, 1, 1);
+                background.color = new Color(1, 1, 1, 1);
+            }
 
-                frontBar.fillAmount = damageNormalized;
-                damageBarFadeTimer = damageBarFadeTimerMax;
-                if (delayedBar != null)
+            frontBar.fillAmount = damageNormalized;
+            damageBarFadeTimer = damageBarFadeTimerMax;
+            if (delayedBar != null)
+            {
+                if (!damageBarInProgress)
                 {
-                    if (!damageBarInProgress)
-                    {
-                        StartCoroutine(DamageBarImage());
-                    }
-                }
-
-                if (hideAtFull && frontBar.fillAmount <= 0)
-                {
-                    frontBar.color = new Color(1, 1, 1, 0);
-                    delayedBar.color = new Color(1, 1, 1, 0);
-                    background.color = new Color(1, 1, 1, 0);
+                    StartCoroutine(DamageBarImage());
                 }
             }
+
+            if (hideAtFull && frontBar.fillAmount <= 0)
+            {
+                frontBar.color = new Color(1, 1, 1, 0);
+                delayedBar.color = new Color(1, 1, 1, 0);
+                background.color = new Color(1, 1, 1, 0);
+            }
+        }
+
+        protected virtual void OnBarHeal(float healNormalized)
+        {
+            frontBar.fillAmount = healNormalized;
         }
 
         protected virtual IEnumerator DamageBarImage()
@@ -89,12 +83,36 @@ namespace DwarfEngine
             damageBarInProgress = false;
         }
 
-        protected virtual void OnBarHeal(string name, float healNormalized)
+        public void OnNext(float value)
         {
-            if (this.name == name)
+            if (delayedBar.fillAmount > value)
             {
-                frontBar.fillAmount = healNormalized;
+                OnBarDamage(value);
             }
+            else if (delayedBar.fillAmount < value)
+            {
+                OnBarHeal(value);
+            }
+
+            if (value <= 0)
+            {
+                HandleOnZero();
+            }
+        }
+
+        public void OnError(Exception error)
+        {
+            Debug.LogError($"An error occured on: {barName}");
+        }
+
+        public void OnCompleted()
+        {
+
+        }
+
+        protected virtual void HandleOnZero()
+        {
+
         }
     }
 }

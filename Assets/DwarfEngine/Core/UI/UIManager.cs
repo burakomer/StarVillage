@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DwarfEngine
@@ -7,15 +9,26 @@ namespace DwarfEngine
     {
         public static UIManager Instance;
 
+        public List<ProgressBar> bars;
+
         public event Action<string, float> OnBarDamage;
         public event Action<string, float> OnBarHeal;
 
         private void Awake()
         {
             this.SetSingleton(ref Instance);
+
+            bars = FindObjectsOfType<ProgressBar>().ToList();
         }
 
         #region Progress Bar Controls
+
+        public void SetProgressBar(GameObject gObj, IProgressSource source, IObservable<float> value)
+        {
+            ProgressBar bar = bars.Find(b => b.name == source.targetBar) ?? ProgressBarFactory.CreateBar(gObj, source);
+            value.Subscribe(bar);
+        }
+
         public void BarDamage(string name, float damageNormalized)
         {
             OnBarDamage?.Invoke(name, damageNormalized);
@@ -25,15 +38,7 @@ namespace DwarfEngine
         {
             OnBarHeal?.Invoke(name, healNormalized);
         }
-
-        public void CreateBar(GameObject obj, string barName, Vector3 offset)
-        {
-            RectTransform barCanvas = Instantiate(GameAssets.Instance.GenericHealthBar.GetComponent<RectTransform>(), obj.transform);
-            barCanvas.localPosition = new Vector3(0f, 0f, 0f) + offset;
-
-            barCanvas.GetComponentInChildren<ProgressBar>().name = barName;
-        }
+        
         #endregion
-
     }
 }

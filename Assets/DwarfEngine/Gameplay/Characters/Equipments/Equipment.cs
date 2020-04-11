@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
-    public abstract class Equipment : MonoBehaviour
+    public abstract class Equipment : MonoBehaviour, IEquipment
     {
-        public Character owner;
+        public Character owner { get; set; }
 
         public void SetOwner(Character _owner)
         {
             owner = _owner;
         }
+
+        public abstract void EquipLogic();
+        public abstract void UnequipLogic();
     }
 }

@@ -12,8 +12,9 @@ namespace DwarfEngine
     }
 
     [Serializable]
-    public class SANList : ReorderableArray<BaseSpriteAnimatorNode>
+    public class SpriteAnimatorNode
     {
-
+        public BaseSpriteAnimatorNode node;
+        [Reorderable] public StringList transitions;
     }
 }

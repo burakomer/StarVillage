@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f1283f1dc495dc48b4db2cbc817aed4, type: 3}
-  m_Name: RunningBlend_MainCharacter
+  m_Name: Running_MainCharacter
   m_EditorClassIdentifier: 
   nodeName: Running
+  parameterName: FacingDirection
   blendSpace:
     array:
     - blendPosition: {x: 1, y: 0}
