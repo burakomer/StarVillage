@@ -1,0 +1,16 @@
+stat_name,stat_type,stat_minmax
+basic_str,int,10-15
+basic_int,int,10-15
+basic_vit,int,10-15
+basic_dex,int,10-15
+life_hp,int,90-120
+life_armor,int,10-30
+life_magicprotect,int,10-30
+attack_attackdamage,int,25-40
+attack_magicpower,int,5-15
+speed_attackspeed,float,5-10
+speed_magichaste,float,5-10
+speed_movspeed,float,2-4
+blood_lifesteal,float,1-5
+blood_lifeperhit,int,10-20
+blood_lifeperkill,int,20-35

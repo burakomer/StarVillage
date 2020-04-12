@@ -1,0 +1,6 @@
+stat_group,stats
+grp_basic,basic_str;basic_int;basic_vit;basic_dex
+grp_blood,blood_lifesteal;blood_lifeperhit;blood_lifeperkill
+grp_life,life_hp;life_armor;life_magicprotect
+grp_speed,speed_attackspeed;speed_magichaste;speed_movspeed
+grp_attack,attack_attackdamage;attack_magicpower

@@ -1,0 +1,5 @@
+stat_collection,stat_group
+coll_character,grp_basic;grp_attack;grp_life;grp_speed;grp_blood
+coll_sword,grp_basic;grp_attack;grp_attack;grp_blood
+coll_dagger,grp_basic;grp_attack;grp_blood;grp_speed
+coll_chestplate,grp_basic;grp_life
