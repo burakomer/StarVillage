@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 400446906}
   - component: {fileID: 400446905}
   m_Layer: 0
-  m_Name: StatSerialize
+  m_Name: StatGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,15 +147,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 400446904}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1562d57146c90e240b4820e3b211ac5e, type: 3}
+  m_Script: {fileID: 11500000, guid: c9b14d4fb6b068a4999832427184741f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectionName: coll_character
   collectionsFile: {fileID: 4900000, guid: a215e540fe219f14fa53e0540de35730, type: 3}
   groupsFile: {fileID: 4900000, guid: ded423b29ecce1042930d3d073b2d6ec, type: 3}
   statsFile: {fileID: 4900000, guid: 131e458a97f9f7f47bf37cd65c596f82, type: 3}
   statTemplates: []
-  generatedStats: []
+  randomStats: []
 --- !u!4 &400446906
 Transform:
   m_ObjectHideFlags: 0
@@ -378,13 +377,14 @@ GameObject:
   - component: {fileID: 1885603006}
   - component: {fileID: 1885603008}
   - component: {fileID: 1885603010}
+  - component: {fileID: 1885603011}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1885603004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +433,7 @@ MonoBehaviour:
   currentHealth:
     value: 0
   invincible: 0
-  maximumHealth: 100
+  maximumHealth: 50
   model: {fileID: 0}
   OnKill:
     m_PersistentCalls:
@@ -512,3 +512,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   animatorParamName: FacingDirection
+--- !u!114 &1885603011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885603003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46bd254f9be7c7a4eb7a0fc2ac43d9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats:
+    array:
+    - name: life_hp
+      value: 100

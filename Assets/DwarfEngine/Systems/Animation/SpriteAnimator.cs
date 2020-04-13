@@ -77,7 +77,6 @@ namespace DwarfEngine
 
             if (blendDatas.ContainsKey(nodeName))
             {
-                Debug.Log(nodeName);
                 Play(nodeName, blendDatas[nodeName].parameterName);
             }
             else if (animationDatas.ContainsKey(nodeName))

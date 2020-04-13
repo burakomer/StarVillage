@@ -27,13 +27,5 @@ namespace DwarfEngine
         public Type type;
     }
 
-    [Serializable]
-    public class DynamicStat
-    {
-        public string name;
-        //public StatModifierType type;
-        public float value;
-    }
-
-    public enum StatModifierType { Flat, Percentage }
+    
 }

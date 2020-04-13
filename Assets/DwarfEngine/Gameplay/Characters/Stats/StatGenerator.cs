@@ -23,7 +23,7 @@ namespace DwarfEngine
         public Dictionary<string, string[]> groupDictionary;
 
         public List<StatTemplate> statTemplates;
-        public List<DynamicStat> randomStats;
+        public List<Stat> randomStats;
 
         private CSVParser csvParser;
 
@@ -98,14 +98,14 @@ namespace DwarfEngine
             #endregion
         }
 
-        public List<DynamicStat> GetRandomStats(string collectionName)
+        public List<Stat> GetRandomStats(string collectionName)
         {
             if (string.IsNullOrEmpty(collectionName))
             {
                 return null;
             }
 
-            List<DynamicStat> generatedStats = new List<DynamicStat>();
+            List<Stat> generatedStats = new List<Stat>();
 
             foreach (string groupName in collectionDictionary[collectionName]) // For each group in the collection
             {
@@ -113,7 +113,7 @@ namespace DwarfEngine
                 string randomStatName = groupDictionary[groupName][randomStat]; // Select the name of the random stat from the group
                 StatTemplate statTemp = statTemplates.Find(s => s.name == randomStatName); // Get the randomly selected stat from its name
 
-                DynamicStat stat = new DynamicStat();
+                Stat stat = new Stat();
 
                 stat.name = statTemp.name; // Set the stat name
                 float randomValue = UnityEngine.Random.Range(statTemp.minValue, statTemp.maxValue); // Get its final value
