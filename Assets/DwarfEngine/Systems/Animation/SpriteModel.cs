@@ -9,12 +9,12 @@ namespace DwarfEngine
         public string animatorTag; // Only get the animators that have this tag
         public List<SpriteAnimator> animators;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             animators = new List<SpriteAnimator>();
             foreach(SpriteAnimator animator in GetComponentsInChildren<SpriteAnimator>(false))
             {
-                if (string.IsNullOrEmpty(animatorTag) && !animator.CompareTag(animatorTag))
+                if (string.IsNullOrEmpty(animatorTag) || !animator.CompareTag(animatorTag))
                 {
                     return;
                 }
@@ -22,7 +22,7 @@ namespace DwarfEngine
             }
         }
 
-        public void PlayAnimation(string animationName)
+        public virtual void PlayAnimation(string animationName)
         {
             foreach (SpriteAnimator animator in animators)
             {
@@ -30,11 +30,19 @@ namespace DwarfEngine
             }
         }
 
-        public void AddBlendParameter(string parameterName, IObservable<Vector2> parameter)
+        public virtual void AddBlendParameter(string parameterName, IObservable<Vector2> parameter)
         {
             foreach (SpriteAnimator animator in animators)
             {
                 animator.AddBlendParameter(parameterName, parameter);
+            }
+        }
+
+        public virtual void FlipX(bool flipped)
+        {
+            foreach (SpriteAnimator animator in animators)
+            {
+                animator.FlipX(flipped);
             }
         }
     }

@@ -14,6 +14,7 @@ namespace DwarfEngine
         public Cooldown(float _coolTime)
         {
             coolTime = _coolTime;
+            isReady = true;
         }
 
         public void Start()

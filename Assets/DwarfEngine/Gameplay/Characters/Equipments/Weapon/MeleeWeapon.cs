@@ -8,7 +8,12 @@ namespace DwarfEngine
     {
         protected override void Shoot()
         {
-            throw new NotImplementedException();
+            
+        }
+
+        protected override void Aim(Vector2 direction)
+        {
+            
         }
     }
 }

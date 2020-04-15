@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14a86d9e5c064648adafd7df040e1b0, type: 3}
+  m_Name: PlayerBody_AD
+  m_EditorClassIdentifier: 
+  animatorNodes:
+  - node: {fileID: 11400000, guid: a4bc888a67b5de141ae0c9b700059446, type: 2}
+    transitions:
+      array: []
+  blendParameters:
+    array:
+    - FacingDirection

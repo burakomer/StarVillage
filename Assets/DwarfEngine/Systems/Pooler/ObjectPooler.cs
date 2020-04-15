@@ -7,13 +7,13 @@ namespace DwarfEngine
     /// <summary>
     /// An object pooler for GameObjects.
     /// </summary>
-    public class ObjectPooler : MonoBehaviour, IObjectPooler
+    public class ObjectPooler : MonoBehaviour
     {
         public event Action<GameObject> UpdatePool;
-        
-        public GameObject objectToPool { get; set; }
-        public int amountToPool { get; set; }
-        public bool expandInNeed { get; set; }
+
+        public GameObject objectToPool;
+        public int amountToPool;
+        public bool expandInNeed;
 
         public List<GameObject> pooledObjects;
         private GameObject _container;
@@ -38,14 +38,14 @@ namespace DwarfEngine
             }
         }
 
-        public T GetPooledObject<T>() where T : MonoBehaviour
+        public GameObject GetPooledObject()
         {
             for (int i = 0; i < pooledObjects.Count; i++)
             {
                 GameObject pooledObj = pooledObjects[i];
                 if (!pooledObj.activeInHierarchy)
                 {
-                    return pooledObjects[i].GetComponent<T>();
+                    return pooledObjects[i];
                 }
             }
             if (expandInNeed)
@@ -55,7 +55,7 @@ namespace DwarfEngine
                 obj.transform.SetParent(_container.transform);
                 obj.SetActive(false);
                 pooledObjects.Add(obj);
-                return obj.GetComponent<T>();
+                return obj;
             }
             else
             {

@@ -9,5 +9,5 @@ public class CharacterInputs
     public IObservable<Vector2> movement;
     public IObservable<Vector2> look;
 
-    public IObservable<bool> attack;
+    public ReadOnlyReactiveProperty<bool> attack;
 }

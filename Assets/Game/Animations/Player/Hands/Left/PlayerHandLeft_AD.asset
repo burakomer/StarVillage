@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14a86d9e5c064648adafd7df040e1b0, type: 3}
+  m_Name: PlayerHandLeft_AD
+  m_EditorClassIdentifier: 
+  animatorNodes:
+  - node: {fileID: 11400000, guid: 95412be547f20314d9c68b32ec2b5693, type: 2}
+    transitions:
+      array: []
+  - node: {fileID: 11400000, guid: 83c9950fd273f5a41a5f92764a515406, type: 2}
+    transitions:
+      array: []
+  - node: {fileID: 11400000, guid: 2012cb96dcf97d642ae7bf7a95b7147c, type: 2}
+    transitions:
+      array: []
+  - node: {fileID: 11400000, guid: 92d29c0549eccba40840c043503ecd4f, type: 2}
+    transitions:
+      array: []
+  blendParameters:
+    array:
+    - FacingDirection

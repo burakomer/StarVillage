@@ -6,22 +6,44 @@ using UniRx;
 
 public class CharacterWeaponEquipmentSlot : CharacterEquipmentSlot, IActiveEquipmentSlot
 {
+    public Transform leftHand;
+    public Transform rightHand;
+
+    private bool _attacking;
 
     protected override void SetInputLogic(CharacterInputs inputs)
     {
         inputs.attack
-            .Where(t => t)
-            .Subscribe(_ => Use((IActiveEquipment)equipment))
+            .Where(t => t && !_attacking)
+            .Subscribe(t =>
+            {
+                _attacking = ((IActiveEquipment)equipment).StartEquipment();
+            })
+            .AddTo(this);
+
+        inputs.attack
+            .Where(t => !t && _attacking)
+            .Subscribe(t => 
+            { 
+                ((IActiveEquipment)equipment).StopEquipment();
+                _attacking = t;
+            })
             .AddTo(this);
     }
 
     public void Use(IActiveEquipment equipment)
     {
-        equipment.StartEquipment();
+        //equipment.StartEquipment();
     }
 
     protected override void Init()
     {
-        
+        base.Init();
+
+        if (equipment != null)
+        {
+            equipment = Instantiate(equipment, rightHand);
+            equipment.SetOwner(_character);
+        }
     }
 }

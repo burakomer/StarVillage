@@ -14,7 +14,7 @@ namespace DwarfEngine
 
         protected override void Init()
         {
-            equipment.SetOwner(_character);
+            
         }
     }
 }

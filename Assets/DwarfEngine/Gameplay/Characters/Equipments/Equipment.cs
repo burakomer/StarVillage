@@ -8,7 +8,7 @@ namespace DwarfEngine
     {
         public Character owner { get; set; }
 
-        public void SetOwner(Character _owner)
+        public virtual void SetOwner(Character _owner)
         {
             owner = _owner;
         }

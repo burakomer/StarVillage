@@ -16,6 +16,9 @@ namespace DwarfEngine
         {
             base.Init();
 
+            equipmentSlots = new List<CharacterEquipmentSlot>();
+            activeEquipmentSlots = new List<IActiveEquipmentSlot>();
+
             foreach (CharacterEquipmentSlot slot in GetComponents<CharacterEquipmentSlot>())
             {
                 equipmentSlots.Add(slot);

@@ -40,7 +40,8 @@ namespace DwarfEngine
                 //.Select(_ => playerControls.Controls.Rotate.ReadValue<Vector2>());
             
             inputs.attack = this.UpdateAsObservable()
-                .Select(_ => playerControls.Controls.Attack.triggered);
+                .Select(_ => playerControls.Controls.Attack.ReadValue<float>() > 0)
+                .ToReadOnlyReactiveProperty();
         }
 
         protected override void Init()

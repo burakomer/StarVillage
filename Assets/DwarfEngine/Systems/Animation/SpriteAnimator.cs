@@ -9,6 +9,9 @@ namespace DwarfEngine
     [RequireComponent(typeof(SpriteRenderer))]
     public class SpriteAnimator : MonoBehaviour
     {
+        public bool active;
+        [Space]
+
         public SpriteAnimatorData animatorData;
 
         /// <summary>
@@ -30,6 +33,11 @@ namespace DwarfEngine
 
         private void Awake()
         {
+            if (!active)
+            {
+                return;
+            }
+
             _renderer = GetComponent<SpriteRenderer>();
 
             animationDatas = new Dictionary<string, SpriteAnimationData>();
@@ -222,6 +230,11 @@ namespace DwarfEngine
             {
                 blendParameterDictionary.Add(parameterName, parameter);
             }
+        }
+
+        public void FlipX(bool flipped)
+        {
+            _renderer.flipX = flipped;
         }
     }
 
