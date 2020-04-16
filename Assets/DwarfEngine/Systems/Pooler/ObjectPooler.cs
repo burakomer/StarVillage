@@ -16,7 +16,7 @@ namespace DwarfEngine
         public bool expandInNeed;
 
         public List<GameObject> pooledObjects;
-        private GameObject _container;
+        [HideInInspector] public GameObject _container;
 
         public void Initialization(bool setParentToThis, int layer = 0)
         {
@@ -61,6 +61,14 @@ namespace DwarfEngine
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Use to re-attach a detached pooled object.
+        /// </summary>
+        public void SetParentToContainer(Transform obj)
+        {
+            obj.SetParent(_container.transform);
         }
 
         private void OnDestroy()

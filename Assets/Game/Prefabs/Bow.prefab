@@ -228,10 +228,10 @@ MonoBehaviour:
   weaponModel: {fileID: 7863022905643095022}
   directionIndicator: {fileID: 3303727775358585615}
   rotateModel: 1
-  attackType: 2
+  attackType: 0
   damage: 10
   rechargeTime: 0.3
-  windUpTime: 0
+  windUpTime: 1
   prematureShoot: 1
   tickFrequency: 0.05
   hitMask:
@@ -240,9 +240,12 @@ MonoBehaviour:
   attackAnimationName: 
   attackFrame: 0
   attackEndFrame: 0
+  shootType: 1
   amountToShoot: 1
   projectileSpeed: 500
   maxDistance: 200
+  fireOffset: {x: 18, y: 0}
+  arrowDrawDistance: -8
 --- !u!114 &1021218577115063418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,3 +263,4 @@ MonoBehaviour:
   amountToPool: 20
   expandInNeed: 1
   pooledObjects: []
+  _container: {fileID: 0}

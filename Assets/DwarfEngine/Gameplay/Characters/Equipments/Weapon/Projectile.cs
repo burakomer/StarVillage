@@ -14,6 +14,7 @@ namespace DwarfEngine
         public float impactRadius;
         public LayerMask hitMask;
         public Vector2 fireOffset;
+        [HideInInspector] public Vector3 originalPos;
 
         //[Header("Feedbacks")]
         //public float feedbackTime = 2f;
@@ -21,8 +22,7 @@ namespace DwarfEngine
         //private ParticleSystem trail;
 
         private Collider2D _collider;
-        private Rigidbody2D _rb;
-        private Vector3 originalPos;
+        private bool fire;
 
         private void Start()
         {
@@ -55,10 +55,13 @@ namespace DwarfEngine
 
         private void FixedUpdate()
         {
-            transform.Translate(Quaternion.AngleAxis(transform.rotation.z, Vector2.right).normalized * Vector2.right * speed * Time.fixedDeltaTime);
-            if (Vector2.Distance(transform.position, originalPos) >= maxDistance)
+            if (fire)
             {
-                OnFeedbackEnd();
+                transform.Translate(Quaternion.AngleAxis(transform.rotation.z, Vector2.right).normalized * Vector2.right * speed * Time.fixedDeltaTime);
+                if (Vector2.Distance(transform.position, originalPos) >= maxDistance)
+                {
+                    OnFeedbackEnd();
+                } 
             }
         }
 
@@ -80,13 +83,13 @@ namespace DwarfEngine
                         _health.Damage(damage, invincibilityDuration);
                     }
 
-                    if (knockbackForce > 0.05f)
+                    if (knockbackForce > 0)
                     {
                         Rigidbody2D colRb = hitObj.GetComponent<Rigidbody2D>();
 
                         if (colRb != null)
                         {
-                            colRb.AddForce(Vector3.Normalize(collision.transform.position - transform.position));
+                            colRb.AddForce(Vector3.Normalize(collision.transform.position - transform.position) * knockbackForce);
                         }
                     }
                 }
@@ -108,6 +111,7 @@ namespace DwarfEngine
 
         private void OnFeedbackEnd()
         {
+            fire = false;
             gameObject.SetActive(false);
             model.enabled = true;
             _collider.enabled = true;
@@ -124,9 +128,9 @@ namespace DwarfEngine
             transform.rotation = Quaternion.identity;
         }
 
-        public void Shoot(Vector2 direction, float speed)
+        public void Shoot()
         {
-            //_rb.AddForce(direction * speed * Time.deltaTime);
+            fire = true;
         }
     }
 

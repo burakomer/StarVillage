@@ -37,10 +37,11 @@ namespace DwarfEngine
         protected ReactiveProperty<WeaponState> state;
         protected Cooldown cooldown;
         protected float windUpTimer;
-        
+
         protected float angle;
 
         private Coroutine windUpCoroutine;
+
 
         private void Start()
         {
@@ -90,6 +91,8 @@ namespace DwarfEngine
         #region Active Equipment
         public void StopEquipment()
         {
+            OnStopEquipment();
+
             if (windUpCoroutine != null)
             {
                 StopCoroutine(windUpCoroutine);
@@ -161,6 +164,11 @@ namespace DwarfEngine
         #endregion
 
         #region Weapon Processing
+        protected virtual void OnStopEquipment()
+        {
+
+        }
+
         /// <summary>
         /// Handle shooting and animation logic here.
         /// </summary>
@@ -184,13 +192,13 @@ namespace DwarfEngine
             {
                 if (angle >= 90 || angle <= -90)
                 {
-                    weaponModel.transform.rotation = Quaternion.Euler(0f, 0f, 180f + angle);
-                    weaponModel.flipX = true;
+                    weaponModel.transform.rotation = Quaternion.Euler(0f, 180f, 180f - angle);
+                    //weaponModel.flipX = true;
                 }
                 else
                 {
                     weaponModel.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-                    weaponModel.flipX = false;
+                    //weaponModel.flipX = false;
                 }
                 //fireFeedback.transform.parent.rotation = Quaternion.Euler(0f, 0f, angle);
             }
@@ -205,7 +213,7 @@ namespace DwarfEngine
                 case AttackType.OneShot:
                     Shoot();
                     cooldown.Start();
-                    StopEquipment();
+                    //StopEquipment();
                     break;
                 case AttackType.Channeling:
                     StartCoroutine(Channel());

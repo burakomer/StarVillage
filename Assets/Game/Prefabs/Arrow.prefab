@@ -184,4 +184,5 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 0
-  fireOffset: {x: 0, y: 0}
+  fireOffset: {x: 20, y: 0}
+  originalPos: {x: 0, y: 0, z: 0}

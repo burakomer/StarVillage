@@ -4,12 +4,22 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
+	public enum ShootType 
+	{ 
+		Immediate, 
+		ButtonRelease // TODO : Doesn't work with Rake
+	}
+
 	public abstract class ProjectileWeapon : Weapon
 	{
 		[Header("Projectile Weapon")]
+		public ShootType shootType;
 		public float amountToShoot;
 		public float projectileSpeed;
 		public float maxDistance;
+		public Vector2 fireOffset;
+
+		protected GameObject currentProjectile;
 
 		private ObjectPooler _pooler;
 
@@ -35,18 +45,73 @@ namespace DwarfEngine
 			p.fireOffset = owner.transform.localPosition;
 			p.maxDistance = maxDistance;
 			p.hitMask = hitMask;
+			p.fireOffset = fireOffset;
+		}
+
+		/// <summary>
+		/// Call this in Shoot or PreWindUp.
+		/// </summary>
+		protected void SetupProjectile()
+		{
+			currentProjectile = _pooler.GetPooledObject();
+
+			if (currentProjectile == null)
+			{
+				return;
+			}
+
+			//currentProjectile.transform.position = transform.position + fireOffset.ToVector3();
+			//currentProjectile.transform.Rotate(Vector3.forward, angle);
+			currentProjectile.transform.SetParent(weaponModel.transform, false);
+			currentProjectile.gameObject.SetActive(true);
 		}
 
 		protected override void Shoot()
 		{
-			GameObject projectile = _pooler.GetPooledObject();
-
-			if (projectile != null)
+			if (currentProjectile != null)
 			{
-				projectile.transform.position = transform.position;
-				projectile.transform.Rotate(Vector3.forward, angle);
-				projectile.gameObject.SetActive(true);
+				if (shootType == ShootType.Immediate)
+				{
+					ShootProjectile();
+				}
 			}
+		}
+
+		protected override void Aim(Vector2 direction)
+		{
+			base.Aim(direction);
+
+			if (currentProjectile != null)
+			{
+				currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+				//if (angle >= 90 || angle <= -90)
+				//{
+				//	currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+				//	//weaponModel.flipX = true;
+				//}
+				//else
+				//{
+				//	currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+				//	//weaponModel.flipX = false;
+				//}
+			}
+		}
+
+		protected override void OnStopEquipment()
+		{
+			base.OnStopEquipment();
+
+			if (shootType == ShootType.ButtonRelease)
+			{
+				ShootProjectile();
+			}
+		}
+
+		private void ShootProjectile()
+		{
+			_pooler.SetParentToContainer(currentProjectile.transform);
+			currentProjectile.GetComponent<Projectile>().Shoot();
+			currentProjectile = null;
 		}
 	}
 }

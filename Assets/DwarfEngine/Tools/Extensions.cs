@@ -27,5 +27,10 @@ namespace DwarfEngine
         {
             return Mathf.Round(value * roundTo) / (float) roundTo;
         }
+
+        public static Vector3 ToVector3(this Vector2 vector, float z = 0)
+        {
+            return new Vector3(vector.x, vector.y, z);
+        }
     }
 }
