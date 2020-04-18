@@ -9,11 +9,13 @@ namespace DwarfEngine
 
         public bool isReady { get; private set; }
 
+        private Action OnReady;
         private float countdown;
 
-        public Cooldown(float _coolTime)
+        public Cooldown(float _coolTime, Action _OnReady = null)
         {
             coolTime = _coolTime;
+            OnReady = _OnReady;
             isReady = true;
         }
 
@@ -23,9 +25,10 @@ namespace DwarfEngine
             isReady = false;
         }
 
-        public void Stop()
+        private void Stop()
         {
             isReady = true;
+            OnReady?.Invoke();
         }
 
         /// <summary>

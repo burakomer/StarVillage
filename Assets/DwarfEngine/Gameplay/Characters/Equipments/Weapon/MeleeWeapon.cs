@@ -6,14 +6,14 @@ namespace DwarfEngine
 {
     public class MeleeWeapon : Weapon
     {
-        protected override void Shoot()
+        protected override void Attack()
         {
             
         }
 
-        protected override void Aim(Vector2 direction)
-        {
-            
-        }
+        //protected override void Aim(Vector2 direction)
+        //{
+        //    
+        //}
     }
 }

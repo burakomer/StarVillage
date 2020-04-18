@@ -7,25 +7,35 @@ namespace DwarfEngine
         [Header("Bow")]
         public float arrowDrawDistance;
 
-        protected override void PreWindUp()
+        protected override void PrepareAttack()
         {
-            base.PreWindUp();
+            base.PrepareAttack();
             SetupProjectile();
-            currentProjectile.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, windUpTime);
-        }
 
-        protected override void WindUpLogic(float windUpNormalized)
-        {
-            //currentProjectile.LeanMoveLocalX(arrowDrawDistance, windUpTime);
+            if (charge != null)
+                currentProjectile.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime);
+            else
+                currentProjectile.transform.localPosition = new Vector2(arrowDrawDistance + fireOffset.x, 0);
         }
 
         protected override void OnStopEquipment()
         {
-            if (currentProjectile != null)
+            if (currentProjectile != null && charge != null)
             {
                 LeanTween.cancel(currentProjectile);
             }
             base.OnStopEquipment();
+        }
+
+        protected override void OnStopWeapon()
+        {
+            if (currentProjectile != null)
+            {
+                pooler.SetParentToContainer(currentProjectile.transform);
+                currentProjectile.SetActive(false);
+                currentProjectile = null;
+            }
+            base.OnStopWeapon();
         }
     }
 }

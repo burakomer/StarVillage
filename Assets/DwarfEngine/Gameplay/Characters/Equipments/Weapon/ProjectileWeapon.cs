@@ -4,16 +4,9 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
-	public enum ShootType 
-	{ 
-		Immediate, 
-		ButtonRelease // TODO : Doesn't work with Rake
-	}
-
 	public abstract class ProjectileWeapon : Weapon
 	{
 		[Header("Projectile Weapon")]
-		public ShootType shootType;
 		public float amountToShoot;
 		public float projectileSpeed;
 		public float maxDistance;
@@ -21,16 +14,16 @@ namespace DwarfEngine
 
 		protected GameObject currentProjectile;
 
-		private ObjectPooler _pooler;
+		protected ObjectPooler pooler;
 
 		protected override void Init()
 		{
 			base.Init();
-			_pooler = GetComponent<ObjectPooler>();
-			_pooler.Initialization(false, owner.gameObject.layer);
-			_pooler.UpdatePool += OnUpdatePool;
+			pooler = GetComponent<ObjectPooler>();
+			pooler.Initialization(false, owner.gameObject.layer);
+			pooler.UpdatePool += OnUpdatePool;
 
-			foreach (GameObject obj in _pooler.pooledObjects)
+			foreach (GameObject obj in pooler.pooledObjects)
 			{
 				OnUpdatePool(obj);
 				//p.transform.localPosition += Owner._characterWeaponUser.weaponHolder.transform.localPosition;
@@ -53,7 +46,7 @@ namespace DwarfEngine
 		/// </summary>
 		protected void SetupProjectile()
 		{
-			currentProjectile = _pooler.GetPooledObject();
+			currentProjectile = pooler.GetPooledObject();
 
 			if (currentProjectile == null)
 			{
@@ -66,50 +59,32 @@ namespace DwarfEngine
 			currentProjectile.gameObject.SetActive(true);
 		}
 
-		protected override void Shoot()
+		protected override void Attack()
 		{
 			if (currentProjectile != null)
-			{
-				if (shootType == ShootType.Immediate)
-				{
-					ShootProjectile();
-				}
-			}
-		}
-
-		protected override void Aim(Vector2 direction)
-		{
-			base.Aim(direction);
-
-			if (currentProjectile != null)
-			{
-				currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-				//if (angle >= 90 || angle <= -90)
-				//{
-				//	currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-				//	//weaponModel.flipX = true;
-				//}
-				//else
-				//{
-				//	currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-				//	//weaponModel.flipX = false;
-				//}
-			}
-		}
-
-		protected override void OnStopEquipment()
-		{
-			base.OnStopEquipment();
-
-			if (shootType == ShootType.ButtonRelease)
 			{
 				ShootProjectile();
 			}
 		}
 
+		//protected override void Aim(Vector2 direction)
+		//{
+		//	if (currentProjectile != null)
+		//	{
+		//		if (angle >= 90 || angle <= -90)
+		//		{
+		//			currentProjectile.transform.rotation = Quaternion.Euler(0f, 180f, angle);
+		//		}
+		//		else
+		//		{
+		//			currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+		//		}
+		//	}
+		//}
+
 		private void ShootProjectile()
 		{
-			_pooler.SetParentToContainer(currentProjectile.transform);
+			pooler.SetParentToContainer(currentProjectile.transform);
 			currentProjectile.GetComponent<Projectile>().Shoot();
 			currentProjectile = null;
 		}

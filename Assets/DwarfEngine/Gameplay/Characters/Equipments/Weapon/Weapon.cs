@@ -1,79 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
-using UniRx.Triggers;
 using System.Collections;
 
 namespace DwarfEngine
 {
-    public enum AttackType { OneShot, Channeling, Rake }
-    public enum WeaponState { Idle, WindUp, Shooting, Recharging }
+    public enum WeaponState { Idle, Requested, Started, Shooting, Stopping, Recharging }
 
+    [RequireComponent(typeof(WeaponAim))]
     public abstract class Weapon : Equipment, IActiveEquipment
     {
-        public Vector2 currentDirection { get; protected set; }
-
         [Header("Graphics")]
         public SpriteRenderer weaponModel;
-        public SpriteRenderer directionIndicator;
-        public bool rotateModel;
-        //public ReactiveProperty<bool> shot;
 
-        [Header("Attributes")]
-        public AttackType attackType;
+        [Header("Settings")]
         public int damage;
         public float rechargeTime;
-        public float windUpTime;
-        public bool prematureShoot;
-        public float tickFrequency;
         public LayerMask hitMask;
 
-        [Header("Animator Parameters")]
-        public string attackAnimationName;
-        public int attackFrame;
-        public int attackEndFrame;
+        //[Header("Animator Parameters")]
 
-        protected ReactiveProperty<WeaponState> state;
+        protected WeaponState state;
         protected Cooldown cooldown;
-        protected float windUpTimer;
+        protected bool stopped;
 
-        protected float angle;
+        #region Components
+        protected WeaponAim aim;
+        protected WeaponCharge charge;
+        protected WeaponResource resource;
+        protected WeaponProcessor processor;
+        #endregion
 
-        private Coroutine windUpCoroutine;
-
-
+        #region Logic
+        #region Initialization and Update
         private void Start()
         {
-            cooldown = new Cooldown(rechargeTime);
-            state = new ReactiveProperty<WeaponState>();
+            cooldown = new Cooldown(rechargeTime, () => SetState(WeaponState.Idle));
+            state = WeaponState.Idle;
 
-            // Sets shot to true when 
-            //weaponModel.currentAnimation
-            //    .Where(anim => anim.animationName == attackAnimationName && anim.currentFrame == attackFrame)
-            //    .Subscribe(_ =>
-            //    {
-            //        shot.Value = true;
-            //    })
-            //    .AddTo(this);
-            //
-            //// Stops the weapon when the specified frame is reached
-            //weaponModel.currentAnimation
-            //    .Where(anim => anim.animationName == attackAnimationName && anim.currentFrame == attackEndFrame)
-            //    .Subscribe(_ =>
-            //    {
-            //        shot.Value = false;
-            //        StopEquipment();
-            //    })
-            //    .AddTo(this);
-            //
-            //shot
-            //    .Where(b => b)
-            //    .Subscribe(_ =>
-            //    {
-            //        Shoot();
-            //    })
-            //    .AddTo(this);
+            aim = GetComponent<WeaponAim>();
+            charge = GetComponent<WeaponCharge>();
+            resource = GetComponent<WeaponResource>();
+            processor = GetComponent<WeaponProcessor>();
 
             Init();
         }
@@ -87,84 +54,198 @@ namespace DwarfEngine
         {
 
         }
+        #endregion
 
         #region Active Equipment
         public void StopEquipment()
         {
-            OnStopEquipment();
-
-            if (windUpCoroutine != null)
-            {
-                StopCoroutine(windUpCoroutine);
-                windUpCoroutine = null;
-            }
-
-            if (windUpTimer < windUpTime && prematureShoot)
-            {
-                windUpTimer = windUpTime;
-                ProcessWeapon();
-            }
-
-            SetState(WeaponState.Recharging);
-
-            if (attackType != AttackType.OneShot)
-            {
-                cooldown.Start(); 
-            }
+            SetState(WeaponState.Stopping);
         }
 
         public bool StartEquipment()
         {
-            if (!cooldown.isReady)
+            return SetState(WeaponState.Requested); // Request to start the weapon from scratch. Works only if the current state is Idle.
+        }
+
+        public IEnumerator StartWeapon()
+        {
+            PrepareAttack(); // Implemented in subclasses of this.
+
+            if (charge != null)
             {
-                Debug.Log($"Cooldown not ready: {name}");
-                return false;
+                yield return StartCoroutine(charge.StartCharging()); // If charge exists, start charging and wait till it completes.
             }
 
-            windUpCoroutine = StartCoroutine(StartWindUp());
-            return true;
-        } 
+            ProcessAttack(); // Proceed to attack.
+        }
+
+        public void ProcessAttack()
+        {
+            SetState(WeaponState.Shooting);
+        }
+
+        public virtual void StopWeapon(bool skipCooldown = false)
+        {
+            SetState(skipCooldown ? WeaponState.Idle : WeaponState.Recharging);
+            stopped = false;
+
+            OnStopWeapon();
+        }
         #endregion
 
-        #region Wind Up
-        private IEnumerator StartWindUp()
+        #region State Machine
+        public bool SetState(WeaponState newState)
         {
-            if (windUpTime > 0)
+            bool stateChanged = false;
+            if (state == WeaponState.Idle)
             {
-                SetState(WeaponState.WindUp);
-                windUpTimer = 0;
-
-                PreWindUp();
-                do
+                if (newState == WeaponState.Requested)
                 {
-                    windUpTimer += Time.deltaTime;
-                    if (windUpTimer >= windUpTime)
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+            else if (state == WeaponState.Requested)
+            {
+                if (newState == WeaponState.Idle || newState == WeaponState.Started || newState == WeaponState.Stopping)
+                {
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+            else if (state == WeaponState.Started)
+            {
+                if (newState == WeaponState.Idle || newState == WeaponState.Shooting || newState == WeaponState.Stopping)
+                {
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+            else if (state == WeaponState.Shooting)
+            {
+                if (newState == WeaponState.Stopping || newState == WeaponState.Recharging)
+                {
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+            else if (state == WeaponState.Stopping)
+            {
+                if (newState == WeaponState.Idle || newState == WeaponState.Recharging || newState == WeaponState.Shooting)
+                {
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+            else if (state == WeaponState.Recharging)
+            {
+                if (newState == WeaponState.Idle)
+                {
+                    state = newState;
+                    stateChanged = true;
+                }
+            }
+
+            if (stateChanged)
+            {
+                ProcessState();
+            }
+
+            return stateChanged;
+        }
+
+        private void ProcessState()
+        {
+            switch (state)
+            {
+                case WeaponState.Idle:
+                    break;
+                case WeaponState.Requested:
+                    if (resource != null)
                     {
-                        windUpTimer = windUpTime;
+                        if (!resource.CheckResource())
+                        {
+                            // Display message
+                            SetState(WeaponState.Idle); // Cancel completely.
+                            break;
+                        }
+                    }
+                    SetState(WeaponState.Started);
+                    break;
+                case WeaponState.Started:
+                    StartCoroutine(StartWeapon());
+                    break;
+                case WeaponState.Shooting:
+                    if (resource != null)
+                    {
+                        if (!resource.Consume())
+                        {
+                            // Display message
+                            SetState(WeaponState.Idle);
+                            break;
+                        }
+                    }
+
+                    if (processor != null)
+                    {
+                        if (resource != null)
+                        {
+                            processor.ProcessAttack(Attack, () => StopWeapon(), stopped, () =>
+                            {
+                                if (!resource.Consume())
+                                {
+                                    // Display message
+                                    SetState(WeaponState.Recharging);
+                                    return;
+                                }
+                            });
+                        }
+                        else
+                        {
+                            processor.ProcessAttack(Attack, () => StopWeapon(), stopped);
+                        }
+                    }
+                    else // Regular weapon processing
+                    {
+                        Attack();
+                        StopWeapon();
+                    }
+                    break;
+                case WeaponState.Stopping:
+                    stopped = true; // For various functions.
+
+                    OnStopEquipment(); // Implemented in subclasses of this.
+
+                    StopCoroutine(StartWeapon()); // Stops if it's running.
+
+                    if (charge != null)
+                    {
+                        if (charge.CancelCharging(() => StopWeapon(true))) // Try to cancel. If successful, return out.
+                        {
+                            break;
+                        }
+                    }
+
+                    if (processor != null)
+                    {
+                        Debug.Log("Processing again!");
+                        SetState(WeaponState.Shooting); // If a processor exists, process again. Uses stopped.
                         break;
                     }
-                    WindUpLogic(windUpTimer / windUpTime);
-                    yield return null;
-                } while (windUpTimer < windUpTime);
+
+                    StopWeapon(); // If this is reached, weapon is stopped completely and the cooldown will start.
+                    break;
+                case WeaponState.Recharging:
+                    cooldown.Start();
+                    break;
+                default:
+                    break;
             }
-
-            windUpCoroutine = null;
-            ProcessWeapon();
-        }
-
-        protected virtual void PreWindUp()
-        {
-
-        }
-
-        protected virtual void WindUpLogic(float windUpNormalized)
-        {
-
         }
         #endregion
 
-        #region Weapon Processing
-        protected virtual void OnStopEquipment()
+        #region Overridables
+        protected virtual void PrepareAttack()
         {
 
         }
@@ -172,92 +253,22 @@ namespace DwarfEngine
         /// <summary>
         /// Handle shooting and animation logic here.
         /// </summary>
-        protected abstract void Shoot();
+        protected abstract void Attack();
 
         /// <summary>
-        /// Handle aim logic here.
+        /// Implement logic here for when the StopEquipment is called.
         /// </summary>
-        /// <param name="direction"></param>
-        protected virtual void Aim(Vector2 direction)
+        protected virtual void OnStopEquipment()
         {
-            angle = Vector2.SignedAngle(Vector2.right, direction);
-            currentDirection = direction.normalized;
 
-            if (directionIndicator != null)
-            {
-                directionIndicator.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            }
-
-            if (rotateModel)
-            {
-                if (angle >= 90 || angle <= -90)
-                {
-                    weaponModel.transform.rotation = Quaternion.Euler(0f, 180f, 180f - angle);
-                    //weaponModel.flipX = true;
-                }
-                else
-                {
-                    weaponModel.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-                    //weaponModel.flipX = false;
-                }
-                //fireFeedback.transform.parent.rotation = Quaternion.Euler(0f, 0f, angle);
-            }
-        }
-
-        private void ProcessWeapon()
-        {
-            SetState(WeaponState.Shooting);
-
-            switch (attackType)
-            {
-                case AttackType.OneShot:
-                    Shoot();
-                    cooldown.Start();
-                    //StopEquipment();
-                    break;
-                case AttackType.Channeling:
-                    StartCoroutine(Channel());
-                    break;
-                case AttackType.Rake:
-                    StartCoroutine(Rake());
-                    break;
-            }
-        }
-
-        #region Channeling
-        private IEnumerator Channel()
-        {
-            Shoot();
-            do
-            {
-                ChannelTick();
-                yield return new WaitForSeconds(tickFrequency);
-            } while (state.Value == WeaponState.Shooting);
         }
 
         /// <summary>
-        /// Must override if attack type is Channeling
+        /// Implement logic here for when the weapon is fully stopped.
         /// </summary>
-        protected virtual void ChannelTick()
+        protected virtual void OnStopWeapon()
         {
 
-        }
-        #endregion
-
-        #region Rake
-        private IEnumerator Rake()
-        {
-            do
-            {
-                Shoot();
-                yield return new WaitForSeconds(tickFrequency);
-            } while (state.Value == WeaponState.Shooting);
-        }
-        #endregion 
-
-        private void SetState(WeaponState newState)
-        {
-            state.Value = newState;
         }
         #endregion
 
@@ -275,15 +286,8 @@ namespace DwarfEngine
         public override void SetOwner(Character _owner)
         {
             base.SetOwner(_owner);
-
-            _owner.brain.inputs.look
-                .Where(v => v != Vector2.zero)
-                .Subscribe(v =>
-                {
-                    Aim(v);
-                })
-                .AddTo(this);
         }
+        #endregion 
         #endregion
     }
 }

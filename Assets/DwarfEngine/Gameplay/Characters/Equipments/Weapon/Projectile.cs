@@ -98,17 +98,6 @@ namespace DwarfEngine
             }
         }
 
-        private void OnFeedbackStart()
-        {
-            model.enabled = false;
-            _collider.enabled = false;
-
-            //if (trail != null)
-            //{
-            //    trail.Stop();
-            //}
-        }
-
         private void OnFeedbackEnd()
         {
             fire = false;
