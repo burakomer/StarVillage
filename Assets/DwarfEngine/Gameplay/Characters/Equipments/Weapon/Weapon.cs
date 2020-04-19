@@ -228,7 +228,6 @@ namespace DwarfEngine
 
                     if (processor != null)
                     {
-                        Debug.Log("Processing again!");
                         SetState(WeaponState.Shooting); // If a processor exists, process again. Uses stopped.
                         break;
                     }

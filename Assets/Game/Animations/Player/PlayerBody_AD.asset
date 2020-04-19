@@ -15,7 +15,12 @@ MonoBehaviour:
   animatorNodes:
   - node: {fileID: 11400000, guid: a4bc888a67b5de141ae0c9b700059446, type: 2}
     transitions:
-      array: []
+      array:
+      - Running
+  - node: {fileID: 11400000, guid: 6be4a747f104d884cbedc22d4144cca9, type: 2}
+    transitions:
+      array:
+      - Idle
   blendParameters:
     array:
     - FacingDirection

@@ -16,4 +16,4 @@ MonoBehaviour:
   framesPerSecond: 1
   loop: 1
   sprites:
-  - {fileID: 21300000, guid: 70519278a9e6d8c4bbd1054e2699f2af, type: 3}
+  - {fileID: -3166533520430183294, guid: 70519278a9e6d8c4bbd1054e2699f2af, type: 3}

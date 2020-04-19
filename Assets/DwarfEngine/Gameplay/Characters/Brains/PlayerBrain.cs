@@ -7,6 +7,7 @@ namespace DwarfEngine
 {
     public class PlayerBrain : CharacterBrain
     {
+        public bool keyboardMouse;
         public PlayerControls playerControls;
         public PlayerState currentState;
 
@@ -26,7 +27,7 @@ namespace DwarfEngine
             inputs.look = this.UpdateAsObservable()
                 .Select(_ =>
                 {
-                    Vector2 lookInput = playerControls.Controls.Rotate.ReadValue<Vector2>();
+                    Vector2 lookInput = keyboardMouse ? Vector3.ClampMagnitude(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position, 1f).ToVector2() : playerControls.Controls.Rotate.ReadValue<Vector2>();
                     if (lookInput != Vector2.zero)
                     {
                         return lookInput;

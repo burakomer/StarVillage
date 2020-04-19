@@ -189,7 +189,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2894915540763796645}
   - component: {fileID: 2672814406022411283}
-  - component: {fileID: -2472441520240498684}
   - component: {fileID: -5664540256777045146}
   - component: {fileID: 5423490907333925906}
   - component: {fileID: 1021218577115063418}
@@ -230,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 7863022905643095022}
   damage: 10
-  rechargeTime: 0.5
+  rechargeTime: 0
   hitMask:
     serializedVersion: 2
     m_Bits: 0
@@ -239,20 +238,6 @@ MonoBehaviour:
   maxDistance: 200
   fireOffset: {x: 18, y: 0}
   arrowDrawDistance: -8
---- !u!114 &-2472441520240498684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7169012879178637841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3c93e8ecbcfd3042877f3e1a16c42ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chargeTime: 0.2
-  prematureAttack: 0
 --- !u!114 &-5664540256777045146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83e44f38ed632b4d88d1689ce326b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 1
+  attackTime: 0
 --- !u!114 &5423490907333925906
 MonoBehaviour:
   m_ObjectHideFlags: 0
