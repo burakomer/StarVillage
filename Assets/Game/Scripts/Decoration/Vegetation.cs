@@ -63,9 +63,6 @@ namespace DwarfEngine
             .append(() => {
                 IdleSwing(startWithRight);
             });
-
-
-            //LeanTween.rotateZ(pivot.gameObject, startWithRight ? -clampAngle : clampAngle, idleSwingTime).setEase(idleEaseType).setLoopPingPong();
         }
     }
 }
