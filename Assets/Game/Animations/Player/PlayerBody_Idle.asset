@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: PlayerBody_Idle
   m_EditorClassIdentifier: 
   nodeName: Idle
-  framesPerSecond: 1
+  framesPerSecond: 12
   loop: 1
   sprites:
-  - {fileID: -3166533520430183294, guid: 70519278a9e6d8c4bbd1054e2699f2af, type: 3}
+  - {fileID: -7793892718302365462, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}
+  - {fileID: -3392095681007517145, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}
+  - {fileID: 3761961445450738287, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}
+  - {fileID: 3937398965129917725, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}
+  - {fileID: 9097777543748649621, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}
+  - {fileID: 1079739173605337072, guid: 356677970fba7db44a782f4d777ee4b0, type: 3}

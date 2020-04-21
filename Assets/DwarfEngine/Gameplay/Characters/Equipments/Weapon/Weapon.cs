@@ -10,14 +10,15 @@ namespace DwarfEngine
     public abstract class Weapon : Equipment, IActiveEquipment
     {
         [Header("Graphics")]
-        public SpriteRenderer weaponModel;
+        public GameObject weaponModel;
 
         [Header("Settings")]
         public int damage;
         public float rechargeTime;
         public LayerMask hitMask;
 
-        //[Header("Animator Parameters")]
+        [Header("Animator Parameters")]
+        public string weaponAnimName;
 
         protected WeaponState state;
         protected Cooldown cooldown;
@@ -285,6 +286,7 @@ namespace DwarfEngine
         public override void SetOwner(Character _owner)
         {
             base.SetOwner(_owner);
+            //_owner.model.PlayAnimation(weaponAnimName);
         }
         #endregion 
         #endregion

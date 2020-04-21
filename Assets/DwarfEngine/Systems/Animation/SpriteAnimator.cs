@@ -234,7 +234,7 @@ namespace DwarfEngine
 
         public void FlipX(bool flipped)
         {
-            _renderer.flipX = flipped;
+            transform.rotation = Quaternion.Euler(0f, flipped ? 180f : 0f, 0f);
         }
     }
 

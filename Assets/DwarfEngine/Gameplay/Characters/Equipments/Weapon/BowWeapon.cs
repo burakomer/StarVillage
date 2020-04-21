@@ -8,17 +8,22 @@ namespace DwarfEngine
         
         [Header("Bow")]
         public float arrowDrawDistance;
-        public GameObject stringPullPoint;
+        public GameObject stringDrawPoint;
+        public LeanTweenType drawEase;
 
         private float stringLoosePoint;
         private float stringDrawDistance;
 
+        private RopeRenderer _rope;
+        
         protected override void Init()
         {
             base.Init();
 
-            stringLoosePoint = stringPullPoint.transform.localPosition.x;
-            stringDrawDistance = (arrowDrawDistance + stringLoosePoint) * -10f;
+            _rope = GetComponentInChildren<RopeRenderer>();
+
+            //stringLoosePoint = stringDrawPoint.transform.localPosition.x;
+            stringDrawDistance = (arrowDrawDistance); //+ stringLoosePoint) * -10f;
         }
 
         protected override void PrepareAttack()
@@ -28,15 +33,25 @@ namespace DwarfEngine
 
             if (charge != null)
             {
-                currentProjectile.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime).setEaseOutSine();
+                currentProjectile.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime).setEase(drawEase);
 
-                LeanTween.cancel(stringPullPoint.gameObject);
-                stringPullPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEaseOutSine();
+                LeanTween.cancel(stringDrawPoint.gameObject);
+                //stringDrawPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
+                _rope.gravityPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
+
+                //gameObject.LeanValue(value => 
+                //{
+                //    _rope.gravityX += value;
+                //}, 
+                //0f, stringDrawDistance, charge.chargeTime);
             }
             else
             {
                 currentProjectile.transform.localPosition = new Vector2(arrowDrawDistance + fireOffset.x, 0);
-                stringPullPoint.transform.localPosition = stringDrawDistance.ToVector3(1, 0, 0);
+                //stringDrawPoint.transform.localPosition = stringDrawDistance.ToVector3(1, 0, 0);
+                _rope.gravityPoint.localPosition = stringDrawDistance.ToVector3(1, 0, 0);
+
+                //_rope.gravityX = stringDrawDistance;
             }
         }
 
@@ -44,9 +59,16 @@ namespace DwarfEngine
         {
             base.Attack();
 
-            LeanTween.cancel(stringPullPoint.gameObject);
+            //LeanTween.cancel(stringDrawPoint.gameObject);
+            //stringDrawPoint.LeanMoveLocalX(stringLoosePoint, STRING_RELEASE_TWEEN_TIME).setEaseOutElastic();
 
-            stringPullPoint.LeanMoveLocalX(stringLoosePoint, STRING_RELEASE_TWEEN_TIME).setEaseOutElastic();
+            LeanTween.cancel(_rope.gravityPoint.gameObject);
+            _rope.gravityPoint.localPosition = Vector3.zero;
+            //_rope.gravityX = 0f;
+
+            LeanTween.cancel(weaponModel);
+            weaponModel.transform.localScale = Vector3.one;
+            weaponModel.LeanScale(new Vector3(1f, 1.35f, 1f), 0.5f).setEasePunch();
         }
 
         protected override void OnStopEquipment()

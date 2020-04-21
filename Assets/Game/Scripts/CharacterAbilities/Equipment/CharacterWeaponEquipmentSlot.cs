@@ -8,6 +8,7 @@ public class CharacterWeaponEquipmentSlot : CharacterEquipmentSlot, IActiveEquip
 {
     public Transform leftHand;
     public Transform rightHand;
+    public Transform handContainer;
 
     private bool _attacking;
 
@@ -42,7 +43,7 @@ public class CharacterWeaponEquipmentSlot : CharacterEquipmentSlot, IActiveEquip
 
         if (equipment != null)
         {
-            equipment = Instantiate(equipment, rightHand);
+            equipment = Instantiate(equipment, handContainer);
             equipment.SetOwner(_character);
         }
     }

@@ -44,6 +44,9 @@ TextureImporter:
   - first:
       213: -7679207131320961366
     second: Vegetation_ShadowBig
+  - first:
+      213: 4526770276000629964
+    second: Shadow_ExtraBig
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -164,10 +167,10 @@ TextureImporter:
       name: Vegetation_1
       rect:
         serializedVersion: 2
-        x: 19
-        y: 57
-        width: 8
-        height: 7
+        x: 20
+        y: 58
+        width: 7
+        height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,9 +231,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 21
-        y: 42
+        y: 43
         width: 10
-        height: 11
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,9 +272,9 @@ TextureImporter:
       name: Vegetation_Shadow
       rect:
         serializedVersion: 2
-        x: 36
+        x: 35
         y: 45
-        width: 7
+        width: 8
         height: 2
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -303,6 +306,27 @@ TextureImporter:
       bones: []
       spriteID: aa6b7fcdcc9fd6590800000000000000
       internalID: -7679207131320961366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadow_ExtraBig
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 50
+        width: 16
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc480d8059152de30800000000000000
+      internalID: 4526770276000629964
       vertices: []
       indices: 
       edges: []

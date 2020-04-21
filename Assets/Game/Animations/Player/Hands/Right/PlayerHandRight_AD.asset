@@ -15,10 +15,12 @@ MonoBehaviour:
   animatorNodes:
   - node: {fileID: 11400000, guid: 6409e32596466554bb1bc29251951630, type: 2}
     transitions:
-      array: []
+      array:
+      - BowHold
   - node: {fileID: 11400000, guid: d48d63212d734ae4b9ce5227c928aff6, type: 2}
     transitions:
-      array: []
+      array:
+      - Idle
   - node: {fileID: 11400000, guid: 9776afcf18d169d49a39d7156ebae034, type: 2}
     transitions:
       array: []

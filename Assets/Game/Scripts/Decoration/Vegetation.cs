@@ -7,6 +7,7 @@ namespace DwarfEngine
     [RequireComponent(typeof(BoxCollider2D))]
     public class Vegetation : MonoBehaviour
     {
+        public bool idleSwing;
         [Range(0f, 90f)]
         public float clampAngle;
         public float idleSwingTime;
@@ -28,9 +29,11 @@ namespace DwarfEngine
             _collider = GetComponent<BoxCollider2D>();
             _collider.isTrigger = true;
 
-            yield return new WaitForSeconds(Random.Range(0, 1f));
-
-            IdleSwing(Random.value > 0.5);
+            if (idleSwing)
+            {
+                yield return new WaitForSeconds(Random.Range(0, 4f));
+                IdleSwing(Random.value > 0.5);
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collider)

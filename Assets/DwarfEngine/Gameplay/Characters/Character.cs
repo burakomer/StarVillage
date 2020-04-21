@@ -5,18 +5,18 @@ namespace DwarfEngine
     [RequireComponent(typeof(CharacterBrain), typeof(Health), typeof(Collider2D))]
     public class Character : MonoBehaviour
     {
+        public bool isAlive => health.isAlive.Value;
+        
         [Header("Properties")]
         public string characterName;
         public CharacterType characterType;
-        public bool isAlive => health.isAlive.Value;
 
         #region Components
-
         [HideInInspector] public new Collider2D collider;
         [HideInInspector] public SpriteModel model;
         [HideInInspector] public Health health;
         [HideInInspector] public CharacterBrain brain;
-        
+        [HideInInspector] public CharacterEquipmentManager equipmentManager;
         #endregion
 
         protected virtual void Awake()
@@ -27,6 +27,7 @@ namespace DwarfEngine
             health.model = model.gameObject;
             
             brain = GetComponent<CharacterBrain>();
+            equipmentManager = GetComponent<CharacterEquipmentManager>();
         }
 
         protected virtual void Start()

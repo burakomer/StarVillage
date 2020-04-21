@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
   intensity:
     overrideState: 1
-    value: 36.3
+    value: 33.98
   threshold:
     overrideState: 1
-    value: 1.2
+    value: 7.48
   softKnee:
     overrideState: 0
     value: 0
@@ -127,17 +127,17 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   saturation:
-    overrideState: 1
-    value: 5
+    overrideState: 0
+    value: 0
   brightness:
     overrideState: 1
-    value: 6
+    value: -5
   postExposure:
     overrideState: 0
     value: 0
   contrast:
     overrideState: 1
-    value: 1
+    value: 6
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -167,13 +167,13 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 1, y: 0.9877427, z: 0.89931047, w: 0}
+    value: {x: 0.96376294, y: 1, z: 0.90298796, w: 0}
   gamma:
     overrideState: 1
-    value: {x: 0.9733911, y: 0.9540743, z: 1, w: 0}
+    value: {x: 0.97329354, y: 0.9461975, z: 1, w: 0}
   gain:
     overrideState: 1
-    value: {x: 1, y: 0.8787933, z: 0.92757004, w: 0}
+    value: {x: 1, y: 0.8660233, z: 0.89441836, w: 0}
   masterCurve:
     overrideState: 0
     value:
@@ -1401,7 +1401,7 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.269
+    value: 0.199
   smoothness:
     overrideState: 1
     value: 1

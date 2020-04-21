@@ -9,6 +9,8 @@ namespace DwarfEngine
 {
     public class CharacterEquipmentManager : CharacterAbility
     {
+        [HideInInspector] public CharacterWeaponEquipmentSlot weaponSlot;
+
         public List<CharacterEquipmentSlot> equipmentSlots;
         public List<IActiveEquipmentSlot> activeEquipmentSlots;
 
@@ -25,6 +27,11 @@ namespace DwarfEngine
                 if (slot is IActiveEquipmentSlot)
                 {
                     activeEquipmentSlots.Add(slot as IActiveEquipmentSlot);
+                }
+
+                if (slot is CharacterWeaponEquipmentSlot)
+                {
+                    weaponSlot = slot as CharacterWeaponEquipmentSlot;
                 }
             }
         }

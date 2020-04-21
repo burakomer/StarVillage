@@ -9,6 +9,9 @@ namespace DwarfEngine
     {
         public static UIManager Instance;
 
+        public Camera UICamera;
+        public Canvas canvas;
+
         public List<ProgressBar> bars;
 
         public event Action<string, float> OnBarDamage;
@@ -17,6 +20,9 @@ namespace DwarfEngine
         private void Awake()
         {
             this.SetSingleton(ref Instance);
+
+            UICamera = GetComponent<Camera>();
+            canvas = GetComponentInChildren<Canvas>();
 
             bars = FindObjectsOfType<ProgressBar>().ToList();
         }
