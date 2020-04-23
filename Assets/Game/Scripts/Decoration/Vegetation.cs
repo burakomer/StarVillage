@@ -19,8 +19,6 @@ namespace DwarfEngine
         private Transform idleSwingAnchor;
         private Transform hitSwingAnchor;
         private BoxCollider2D _collider;
-        private LTSeq currentSeq;
-        private LTSeq idleSeq;
 
         private IEnumerator Start()
         {
@@ -28,6 +26,8 @@ namespace DwarfEngine
             hitSwingAnchor = transform.parent;
             _collider = GetComponent<BoxCollider2D>();
             _collider.isTrigger = true;
+
+            LeanTween.init(1000, 1000);
 
             if (idleSwing)
             {
@@ -38,29 +38,20 @@ namespace DwarfEngine
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
-            if (currentSeq != null)
-            {
-                LeanTween.cancel(currentSeq.id);
-                hitSwingAnchor.localRotation = Quaternion.Euler(0, 0, 0);
-                //return;
-            }
+            LeanTween.cancel(hitSwingAnchor.gameObject);
+            hitSwingAnchor.localRotation = Quaternion.Euler(0, 0, 0);
 
             Vector3 contactPoint = collider.ClosestPoint(transform.position);
             Vector3 center = _collider.bounds.center;
             
             bool isRight = contactPoint.x > center.x;
-            
-            currentSeq = LeanTween.sequence();
-            currentSeq.append(LeanTween.rotateLocal(hitSwingAnchor.gameObject, Mathf.Clamp(isRight ? swingStrength : -swingStrength, -clampAngle, clampAngle).ToVector3(0, 0, 1), swingTime).setEasePunch())
-                .append(() =>
-                {
-                    currentSeq = null;
-                });
+
+            LeanTween.rotateLocal(hitSwingAnchor.gameObject, Mathf.Clamp(isRight ? swingStrength : -swingStrength, -clampAngle, clampAngle).ToVector3(0, 0, 1), swingTime).setEasePunch();
         }
 
         private void IdleSwing(bool startWithRight)
         {
-            idleSeq = LeanTween.sequence()
+            LeanTween.sequence()
             .append(LeanTween.rotateLocal(idleSwingAnchor.gameObject, (startWithRight ? clampAngle : -clampAngle).ToVector3(0, 0, 1), idleSwingTime).setEase(idleEaseType))
             .append(LeanTween.rotateLocal(idleSwingAnchor.gameObject, (startWithRight ? -clampAngle : clampAngle).ToVector3(0, 0, 1), idleSwingTime).setEase(idleEaseType))
             .append(() => {
