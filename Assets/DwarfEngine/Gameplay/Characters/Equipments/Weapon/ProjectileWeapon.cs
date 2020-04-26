@@ -7,32 +7,33 @@ namespace DwarfEngine
 	public abstract class ProjectileWeapon : Weapon
 	{
 		[Header("Projectile Weapon")]
+		public Projectile projectile;
 		public float amountToShoot;
 		public float projectileSpeed;
 		public float maxDistance;
 		public Vector2 fireOffset;
 
-		protected GameObject currentProjectile;
+		[Header("Object Pooler")]
+		public int amountToPool;
+		public bool expandInNeed;
 
-		protected ObjectPooler pooler;
+		protected Projectile currentProjectile;
+		protected ObjectPooler<Projectile> pooler;
 
 		protected override void Init()
 		{
 			base.Init();
-			pooler = GetComponent<ObjectPooler>();
-			pooler.Initialization(false, owner.gameObject.layer);
-			pooler.UpdatePool += OnUpdatePool;
+			pooler = new ObjectPooler<Projectile>(projectile, amountToPool, expandInNeed);
+			pooler.Initialize(OnUpdatePool, owner.gameObject.layer);
 
-			foreach (GameObject obj in pooler.pooledObjects)
+			foreach (Projectile obj in pooler)
 			{
 				OnUpdatePool(obj);
-				//p.transform.localPosition += Owner._characterWeaponUser.weaponHolder.transform.localPosition;
 			}
 		}
 
-		private void OnUpdatePool(GameObject obj)
+		private void OnUpdatePool(Projectile p)
 		{
-			Projectile p = obj.GetComponent<Projectile>();
 			p.damage = damage;
 			p.speed = projectileSpeed;
 			p.fireOffset = owner.transform.localPosition;
@@ -42,19 +43,17 @@ namespace DwarfEngine
 		}
 
 		/// <summary>
-		/// Call this in Shoot or PreWindUp.
+		/// Call this in Shoot or PreCharge.
 		/// </summary>
 		protected void SetupProjectile()
 		{
-			currentProjectile = pooler.GetPooledObject();
+			currentProjectile = pooler.Get();
 
 			if (currentProjectile == null)
 			{
 				return;
 			}
 
-			//currentProjectile.transform.position = transform.position + fireOffset.ToVector3();
-			//currentProjectile.transform.Rotate(Vector3.forward, angle);
 			currentProjectile.transform.SetParent(weaponModel.transform, false);
 			currentProjectile.gameObject.SetActive(true);
 		}
@@ -67,26 +66,18 @@ namespace DwarfEngine
 			}
 		}
 
-		//protected override void Aim(Vector2 direction)
-		//{
-		//	if (currentProjectile != null)
-		//	{
-		//		if (angle >= 90 || angle <= -90)
-		//		{
-		//			currentProjectile.transform.rotation = Quaternion.Euler(0f, 180f, angle);
-		//		}
-		//		else
-		//		{
-		//			currentProjectile.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-		//		}
-		//	}
-		//}
-
 		private void ShootProjectile()
 		{
 			pooler.SetParentToContainer(currentProjectile.transform);
-			currentProjectile.GetComponent<Projectile>().Shoot();
+			
+			currentProjectile.transform.localScale = Vector3.one;
+			currentProjectile.Shoot();
 			currentProjectile = null;
+		}
+
+		private void OnDestroy()
+		{
+			pooler.Destroy();
 		}
 	}
 }

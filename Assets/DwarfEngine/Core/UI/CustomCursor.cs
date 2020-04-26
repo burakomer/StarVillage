@@ -33,7 +33,17 @@ namespace DwarfEngine
 						}
 						else
 						{
-							((RectTransform)transform).anchoredPosition = Camera.main.WorldToScreenPoint((v * fixedCursorDistance) + LevelManager.Instance.player.equipmentManager.weaponSlot.handContainer.transform.position.ToVector2())
+							((RectTransform)transform).anchoredPosition = 
+							Camera.main.WorldToScreenPoint((v * fixedCursorDistance) 
+							+ LevelManager
+							.Instance
+							.player
+							.equipmentManager
+							.GetSlot<CharacterWeaponEquipmentSlot, Weapon>(typeof(Weapon))
+							.handContainer
+							.transform
+							.position
+							.ToVector2())
 								/ UIManager.Instance.canvas.scaleFactor;
 						}
 					}

@@ -33,7 +33,7 @@ namespace DwarfEngine
 
             if (charge != null)
             {
-                currentProjectile.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime).setEase(drawEase);
+                currentProjectile.gameObject.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime).setEase(drawEase);
 
                 LeanTween.cancel(stringDrawPoint.gameObject);
                 //stringDrawPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
@@ -68,14 +68,14 @@ namespace DwarfEngine
 
             LeanTween.cancel(weaponModel);
             weaponModel.transform.localScale = Vector3.one;
-            weaponModel.LeanScale(new Vector3(1f, 1.35f, 1f), 0.5f).setEasePunch();
+            weaponModel.LeanScale(new Vector3(1f, 1.35f, 1f), STRING_RELEASE_TWEEN_TIME).setEasePunch();
         }
 
         protected override void OnStopEquipment()
         {
             if (currentProjectile != null && charge != null)
             {
-                LeanTween.cancel(currentProjectile);
+                LeanTween.cancel(currentProjectile.gameObject);
             }
             base.OnStopEquipment();
         }
@@ -85,7 +85,7 @@ namespace DwarfEngine
             if (currentProjectile != null)
             {
                 pooler.SetParentToContainer(currentProjectile.transform);
-                currentProjectile.SetActive(false);
+                currentProjectile.gameObject.SetActive(false);
                 currentProjectile = null;
             }
             base.OnStopWeapon();

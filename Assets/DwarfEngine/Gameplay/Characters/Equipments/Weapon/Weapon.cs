@@ -7,6 +7,7 @@ namespace DwarfEngine
     public enum WeaponState { Idle, Requested, Started, Shooting, Stopping, Recharging }
 
     [RequireComponent(typeof(WeaponAim))]
+    [DisallowMultipleComponent]
     public abstract class Weapon : Equipment, IActiveEquipment
     {
         [Header("Graphics")]
@@ -32,6 +33,7 @@ namespace DwarfEngine
         #endregion
 
         #region Logic
+
         #region Initialization and Update
         private void Start()
         {
@@ -43,7 +45,7 @@ namespace DwarfEngine
             resource = GetComponent<WeaponResource>();
             processor = GetComponent<WeaponProcessor>();
 
-            Init();
+            //Init();
         }
 
         private void Update()
@@ -51,6 +53,9 @@ namespace DwarfEngine
             cooldown.Update();
         }
 
+        /// <summary>
+        /// Called after the owner is set.
+        /// </summary>
         protected virtual void Init()
         {
 
@@ -286,7 +291,7 @@ namespace DwarfEngine
         public override void SetOwner(Character _owner)
         {
             base.SetOwner(_owner);
-            //_owner.model.PlayAnimation(weaponAnimName);
+            Init();
         }
         #endregion 
         #endregion
