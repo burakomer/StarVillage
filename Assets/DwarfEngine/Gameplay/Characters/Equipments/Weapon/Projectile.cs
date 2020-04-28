@@ -5,10 +5,15 @@ namespace DwarfEngine
     public class Projectile : MonoBehaviour
     {
         public SpriteRenderer model;
-        public int damage;
-        public float invincibilityDuration;
-        public float speed;
-        public float maxDistance;
+        
+        [Header("Stats")]
+        public Stat damage;
+        public Stat speed;
+        public Stat maxDistance;
+        public Stat invincibilityDuration;
+
+        [Space]
+        
         public float knockbackForce;
         public Transform impactPoint;
         public float impactRadius;
@@ -57,8 +62,8 @@ namespace DwarfEngine
         {
             if (fire)
             {
-                transform.Translate(Quaternion.AngleAxis(transform.rotation.z, Vector2.right).normalized * Vector2.right * speed * Time.fixedDeltaTime);
-                if (Vector2.Distance(transform.position, originalPos) >= maxDistance)
+                transform.Translate(Quaternion.AngleAxis(transform.rotation.z, Vector2.right).normalized * Vector2.right * speed.FloatValue * Time.fixedDeltaTime);
+                if (Vector2.Distance(transform.position, originalPos) >= maxDistance.FloatValue)
                 {
                     OnFeedbackEnd();
                 } 
@@ -80,7 +85,7 @@ namespace DwarfEngine
                     Health _health = hitObj.GetComponent<Health>();
                     if (_health != null)
                     {
-                        _health.Damage(damage, invincibilityDuration);
+                        _health.Damage(damage.IntValue, invincibilityDuration.FloatValue);
                     }
 
                     if (knockbackForce > 0)

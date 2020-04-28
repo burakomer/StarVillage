@@ -1,9 +1,9 @@
 ﻿namespace DwarfEngine
 {
     /// <summary>
-    /// Special inventories require special logic to work with.
+    /// Secondary inventories are connected to a main storage inventory.
     /// </summary>
-    public interface ISpecialInventory
+    public interface ISecondaryInventory
     {
         StorageInventory mainInventory { get; set; }
     }

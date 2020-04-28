@@ -8,12 +8,25 @@ namespace DwarfEngine
     {
         public Character owner { get; set; }
 
-        public virtual void SetOwner(Character _owner)
+        public void SetOwner(Character _owner)
         {
             owner = _owner;
+            EquipLogic();
         }
 
-        public abstract void EquipLogic();
-        public abstract void UnequipLogic();
+        private void OnDestroy()
+        {
+            UnequipLogic();
+        }
+
+        /// <summary>
+        /// Called after the owner is set.
+        /// </summary>
+        protected abstract void EquipLogic();
+
+        /// <summary>
+        /// Called when destroyed.
+        /// </summary>
+        protected abstract void UnequipLogic();
     }
 }

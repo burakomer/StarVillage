@@ -39,7 +39,7 @@ namespace DwarfEngine
 							.Instance
 							.player
 							.equipmentManager
-							.GetSlot<CharacterWeaponEquipmentSlot, Weapon>(typeof(Weapon))
+							.GetSlot<CharacterWeaponSlot, Weapon>(0)
 							.handContainer
 							.transform
 							.position
@@ -53,6 +53,24 @@ namespace DwarfEngine
 					}
 				})
 				.AddTo(this);
+
+			if (InputManager.Instance.inputMode == InputMode.Gamepad)
+			{
+				this.UpdateAsObservable()
+				.Select(_ => InputManager.Instance.GetInteract() > 0)
+				.Subscribe(i =>
+				{
+					if (i)
+					{
+						OnPointerDown(null);
+					}
+					else
+					{
+						OnPointerUp(null);
+					}
+				})
+				.AddTo(this);
+			}
 
 			Cursor.visible = false;
 		}

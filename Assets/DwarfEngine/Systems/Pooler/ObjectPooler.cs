@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DwarfEngine
 {
     /// <summary>
-    /// An object pooler for GameObjects.
+    /// A general-purpose object pooler for GameObjects.
     /// </summary>
     public class ObjectPooler : MonoBehaviour
     {

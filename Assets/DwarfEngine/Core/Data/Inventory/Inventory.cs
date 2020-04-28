@@ -8,10 +8,10 @@ namespace DwarfEngine
     {
         public string inventoryName;
 
-        protected List<ItemData> items;
+        protected List<ItemObject> items;
         protected Character owner;
 
-        public ItemData this[int index]
+        public ItemObject this[int index]
         {
             get => items[index];
             set => items[index] = value;
@@ -27,11 +27,11 @@ namespace DwarfEngine
 
         }
 
-        public abstract bool PlaceItem(ItemData newItem);
+        public abstract bool PlaceItem(ItemObject newItem);
         public abstract void Interact(int slotIndex);
         public abstract void MoveItem(Inventory targetInventory, int startingIndex, int targetIndex);
 
-        public bool HasItem(ItemData item)
+        public bool HasItem(ItemObject item)
         {
             return items.Contains(item);
         }
@@ -46,5 +46,7 @@ namespace DwarfEngine
         {
             return ((IEnumerable)items).GetEnumerator();
         }
+
+        public abstract void OnSaveInitiated();
     }
 }

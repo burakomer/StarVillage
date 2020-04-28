@@ -524,17 +524,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 5445824973144817646}
-  damage: 10
-  rechargeTime: 0
+  damage:
+    baseValue: 10
+  rechargeTime:
+    baseValue: 0
   hitMask:
     serializedVersion: 2
     m_Bits: 0
   weaponAnimName: BowHold
   projectile: {fileID: 7014837639800522804, guid: ceec5087039ca9d4e9226552f335529b,
     type: 3}
-  amountToShoot: 1
-  projectileSpeed: 500
-  maxDistance: 500
+  projectileSpeed:
+    baseValue: 500
+  maxDistance:
+    baseValue: 500
   fireOffset: {x: 10, y: 0}
   amountToPool: 20
   expandInNeed: 1

@@ -6,7 +6,7 @@ using UniRx;
 namespace DwarfEngine
 {
     //[EquipmentSlot(typeof(Weapon))]
-    public class CharacterWeaponEquipmentSlot : CharacterEquipmentSlot<Weapon>, IActiveEquipmentSlot
+    public class CharacterWeaponSlot : CharacterEquipmentSlot<Weapon>
     {
         public Transform leftHand;
         public Transform rightHand;
@@ -20,7 +20,7 @@ namespace DwarfEngine
                 .Where(t => t && !_attacking)
                 .Subscribe(t =>
                 {
-                    _attacking = ((IActiveEquipment)equipment).StartEquipment();
+                    _attacking = ((IActiveEquipment)Equipment).StartEquipment();
                 })
                 .AddTo(this);
 
@@ -28,25 +28,20 @@ namespace DwarfEngine
                 .Where(t => !t && _attacking)
                 .Subscribe(t =>
                 {
-                    ((IActiveEquipment)equipment).StopEquipment();
+                    ((IActiveEquipment)Equipment).StopEquipment();
                     _attacking = t;
                 })
                 .AddTo(this);
-        }
-
-        public void Use(IActiveEquipment equipment)
-        {
-            //equipment.StartEquipment();
         }
 
         protected override void Init()
         {
             base.Init();
 
-            if (equipment != null)
+            if (Equipment != null)
             {
-                equipment = Instantiate(equipment, handContainer);
-                equipment.SetOwner(_character);
+                Equipment = Instantiate(Equipment, handContainer);
+                Equipment.SetOwner(_character);
             }
         }
 
@@ -54,15 +49,16 @@ namespace DwarfEngine
         {
             Unequip();
 
-            equipment = Instantiate(newEquipment, handContainer);
-            return equipment;
+            Equipment = Instantiate(newEquipment, handContainer);
+            return Equipment;
         }
 
         public override void Unequip()
         {
-            if (equipment != null)
+            if (Equipment != null)
             {
-                Destroy(equipment.gameObject);
+                Destroy(Equipment.gameObject);
+                Equipment = null;
             }
         }
     }

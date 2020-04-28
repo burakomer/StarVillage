@@ -35,9 +35,9 @@ namespace DwarfEngine
             {
                 (inventoryToConnect as IBasicInventory).Connect(this);
             }
-            else if (inventoryToConnect is ISpecialInventory)
+            else if (inventoryToConnect is ISecondaryInventory)
             {
-                (inventoryToConnect as ISpecialInventory).mainInventory = this;
+                (inventoryToConnect as ISecondaryInventory).mainInventory = this;
             }
         }
 
@@ -64,14 +64,14 @@ namespace DwarfEngine
             }
         }
 
-        public override bool PlaceItem(ItemData newItem)
+        public override bool PlaceItem(ItemObject newItem)
         {
             if (newItem is IStackableItem)
             {
                 int? emptyIndex = null;
                 for (int i = 0; i < items.Capacity; i++)
                 {
-                    if (items[i].id == newItem.id)
+                    if (items[i].Id == newItem.Id)
                     {
                         if (((items[i] as IStackableItem).count + (newItem as IStackableItem).count) <= (items[i] as IStackableItem).maxStack)
                         {
@@ -113,13 +113,13 @@ namespace DwarfEngine
                 return;
             }
 
-            if (targetInventory is ISpecialInventory)
+            if (targetInventory is ISecondaryInventory)
             {
                 targetInventory.MoveItem(this, targetIndex, startingIndex);
             }
             else // Basic storage item moving logic
             {
-                ItemData tempItem = targetInventory[targetIndex];
+                ItemObject tempItem = targetInventory[targetIndex];
                 targetInventory[targetIndex] = items[startingIndex];
                 items[startingIndex] = tempItem;
             }

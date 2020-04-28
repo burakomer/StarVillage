@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace DwarfEngine
 {
-    public abstract class EquipmentInventory<T> : StaticInventory, ISpecialInventory where T : IEquipmentItem
+    public abstract class EquipmentInventory<T> : StaticInventory, ISecondaryInventory where T : IEquipmentItem
     {
         public StorageInventory mainInventory { get; set; }
 
-        public override bool PlaceItem(ItemData newItem)
+        public override bool PlaceItem(ItemObject newItem)
         {
             // First, check for an empty slot and try to equip the item
             for (int i = 0; i < items.Capacity; i++)
@@ -65,7 +65,7 @@ namespace DwarfEngine
                 {
                     if ((targetInventory[targetIndex] as IEquipmentItem).Equip(owner.equipmentManager, startingIndex))
                     {
-                        ItemData tempItem = targetInventory[targetIndex];
+                        ItemObject tempItem = targetInventory[targetIndex];
                         targetInventory[targetIndex] = items[startingIndex];
                         items[startingIndex] = tempItem;
                     }

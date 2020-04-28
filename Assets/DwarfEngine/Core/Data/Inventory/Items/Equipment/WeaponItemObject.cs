@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
-	[CreateAssetMenu(fileName = "New Weapon Data", menuName = "Data/Items/Equipment/Weapon Item")]
-	public class WeaponItemData : ItemData<Weapon>, IEquipmentItem
+	[CreateAssetMenu(fileName = "New Weapon Item", menuName = "Data/Items/Equipment/Weapon Item")]
+	public class WeaponItemObject : ItemObject<Weapon>, IEquipmentItem
 	{
 		[SerializeField] private string targetInventory;
 		public string TargetInventory => targetInventory;

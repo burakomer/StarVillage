@@ -9,7 +9,17 @@ namespace DwarfEngine
     [RequireComponent(typeof(CharacterEquipmentManager))]
     public abstract class CharacterEquipmentSlot<T> : CharacterEquipmentSlot where T : Equipment
     {
-        public T equipment;
+        public T Equipment
+        {
+            get
+            {
+                return equipment as T;
+            }
+            set
+            {
+                equipment = value;
+            }
+        }
 
         public abstract Equipment Equip(T newEquipment);
         public abstract void Unequip();
@@ -18,5 +28,6 @@ namespace DwarfEngine
     public abstract class CharacterEquipmentSlot : CharacterAbility
     {
         public string targetInventory;
+        public Equipment equipment;
     }
 }

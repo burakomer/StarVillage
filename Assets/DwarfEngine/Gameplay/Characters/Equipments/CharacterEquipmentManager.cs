@@ -8,6 +8,9 @@ namespace DwarfEngine
 {
     public class CharacterEquipmentManager : CharacterAbility
     {
+        public event Action<Equipment> OnEquip;
+        public event Action<Equipment> OnUnequip;
+
         public List<IActiveEquipmentSlot> activeEquipmentSlots;
         private Dictionary<Type, CharacterEquipmentSlot[]> equipmentSlots;
 
@@ -42,18 +45,30 @@ namespace DwarfEngine
             }
         }
 
-        public TSlot GetSlot<TSlot, TEq>(Type equipmentType) where TSlot : CharacterEquipmentSlot where TEq : Equipment
+        public CharacterEquipmentSlot[] GetSlots<TEq>() where TEq : Equipment
         {
-            return equipmentSlots[equipmentType] as TSlot;
+            return equipmentSlots[typeof(TEq)];
+        }
+
+        public CharacterEquipmentSlot GetSlot<TEq>(int slotIndex) where TEq : Equipment
+        {
+            return equipmentSlots[typeof(TEq)][slotIndex];
+        }
+
+        public TSlot GetSlot<TSlot, TEq>(int slotIndex) where TSlot : CharacterEquipmentSlot where TEq : Equipment
+        {
+            return equipmentSlots[typeof(TEq)][slotIndex] as TSlot;
         }
 
         public bool Equip<T>(T newEquipment, int slotIndex = 0) where T : Equipment
         {
             (equipmentSlots[typeof(T)][slotIndex] as CharacterEquipmentSlot<T>)
-                .Equip(newEquipment)
+                .Equip(newEquipment) // TODO: Equip logic (level check, class check etc.)
                 .SetOwner(_character);
 
-            return true; // TODO: Equip logic (level check, class check etc.)
+            OnEquip?.Invoke(newEquipment);
+
+            return true; 
         }
 
         public void Unequip<T>(int slotIndex = 0) where T : Equipment

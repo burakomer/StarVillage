@@ -1,6 +1,6 @@
 ﻿namespace DwarfEngine
 {
-    public class WeaponEquipmentInventory : EquipmentInventory<WeaponItemData>
+    public class WeaponEquipmentInventory : EquipmentInventory<WeaponItemObject>
     {
         
     }

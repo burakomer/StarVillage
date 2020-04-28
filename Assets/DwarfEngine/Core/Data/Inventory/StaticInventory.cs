@@ -9,7 +9,14 @@ namespace DwarfEngine
 
         protected override void Init()
         {
-            items = new List<ItemData>(itemLimit);
+            items = new List<ItemObject>(itemLimit);
+        }
+
+        public override void OnSaveInitiated()
+        {
+            InventoryData data = new InventoryData(items);
+
+            // TODO : Save data to storage
         }
     }
 }

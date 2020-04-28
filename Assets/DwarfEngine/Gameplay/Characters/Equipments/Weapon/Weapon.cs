@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using UniRx;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace DwarfEngine
 {
@@ -14,8 +13,8 @@ namespace DwarfEngine
         public GameObject weaponModel;
 
         [Header("Settings")]
-        public int damage;
-        public float rechargeTime;
+        public Stat damage;
+        public Stat rechargeTime;
         public LayerMask hitMask;
 
         [Header("Animator Parameters")]
@@ -37,7 +36,7 @@ namespace DwarfEngine
         #region Initialization and Update
         private void Start()
         {
-            cooldown = new Cooldown(rechargeTime, () => SetState(WeaponState.Idle));
+            cooldown = new Cooldown(rechargeTime.FloatValue, () => SetState(WeaponState.Idle));
             state = WeaponState.Idle;
 
             aim = GetComponent<WeaponAim>();
@@ -51,14 +50,6 @@ namespace DwarfEngine
         private void Update()
         {
             cooldown.Update();
-        }
-
-        /// <summary>
-        /// Called after the owner is set.
-        /// </summary>
-        protected virtual void Init()
-        {
-
         }
         #endregion
 
@@ -277,23 +268,6 @@ namespace DwarfEngine
         }
         #endregion
 
-        #region Equipment
-        public override void EquipLogic()
-        {
-
-        }
-
-        public override void UnequipLogic()
-        {
-
-        }
-
-        public override void SetOwner(Character _owner)
-        {
-            base.SetOwner(_owner);
-            Init();
-        }
-        #endregion 
         #endregion
     }
 }

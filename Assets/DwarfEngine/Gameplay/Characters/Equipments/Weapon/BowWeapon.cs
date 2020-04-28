@@ -11,14 +11,13 @@ namespace DwarfEngine
         public GameObject stringDrawPoint;
         public LeanTweenType drawEase;
 
-        private float stringLoosePoint;
         private float stringDrawDistance;
 
         private RopeRenderer _rope;
         
-        protected override void Init()
+        protected override void EquipLogic()
         {
-            base.Init();
+            base.EquipLogic();
 
             _rope = GetComponentInChildren<RopeRenderer>();
 

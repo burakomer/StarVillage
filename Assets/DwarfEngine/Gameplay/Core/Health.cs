@@ -14,7 +14,7 @@ namespace DwarfEngine
 
         [Header("Properties")]
         [SerializeField] private bool invincible;
-        [StatId("life_hp")] public int maximumHealth;
+        public int maximumHealth;
         public GameObject model;
 
         [Header("Death")] 

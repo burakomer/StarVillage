@@ -11,6 +11,16 @@ namespace DwarfEngine
             
         }
 
+        protected override void EquipLogic()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void UnequipLogic()
+        {
+            throw new NotImplementedException();
+        }
+
         //protected override void Aim(Vector2 direction)
         //{
         //    

@@ -8,10 +8,10 @@ namespace DwarfEngine
 	{
 		[Header("Projectile Weapon")]
 		public Projectile projectile;
-		public float amountToShoot;
-		public float projectileSpeed;
-		public float maxDistance;
+		public Stat projectileSpeed;
+		public Stat maxDistance;
 		public Vector2 fireOffset;
+		//public float amountToShoot;
 
 		[Header("Object Pooler")]
 		public int amountToPool;
@@ -20,9 +20,8 @@ namespace DwarfEngine
 		protected Projectile currentProjectile;
 		protected ObjectPooler<Projectile> pooler;
 
-		protected override void Init()
+		protected override void EquipLogic()
 		{
-			base.Init();
 			pooler = new ObjectPooler<Projectile>(projectile, amountToPool, expandInNeed);
 			pooler.Initialize(OnUpdatePool, owner.gameObject.layer);
 
@@ -30,6 +29,11 @@ namespace DwarfEngine
 			{
 				OnUpdatePool(obj);
 			}
+		}
+
+		protected override void UnequipLogic()
+		{
+			pooler.Destroy();
 		}
 
 		private void OnUpdatePool(Projectile p)
@@ -62,6 +66,7 @@ namespace DwarfEngine
 		{
 			if (currentProjectile != null)
 			{
+				//Debug.Log($"Damage: {damage.IntValue}");
 				ShootProjectile();
 			}
 		}
@@ -73,11 +78,6 @@ namespace DwarfEngine
 			currentProjectile.transform.localScale = Vector3.one;
 			currentProjectile.Shoot();
 			currentProjectile = null;
-		}
-
-		private void OnDestroy()
-		{
-			pooler.Destroy();
 		}
 	}
 }

@@ -4869,10 +4869,10 @@ GameObject:
   - component: {fileID: 4071927164928867549}
   - component: {fileID: 4071927164928867491}
   - component: {fileID: 4071927164928867489}
-  - component: {fileID: 4071927164928867488}
   - component: {fileID: 4071927164928867494}
   - component: {fileID: 4071927164928867495}
   - component: {fileID: 4071927164928867493}
+  - component: {fileID: 774156319508622026}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -5010,22 +5010,6 @@ MonoBehaviour:
   active: 1
   flip: 1
   animatorParamName: FacingDirection
---- !u!114 &4071927164928867488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4071927164928867544}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46bd254f9be7c7a4eb7a0fc2ac43d9d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats:
-    array:
-    - name: life_hp
-      value: 100
 --- !u!114 &4071927164928867494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5039,7 +5023,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 1
-  equipmentSlots: []
 --- !u!114 &4071927164928867495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5067,9 +5050,25 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4071927164928867544}
   m_Enabled: 1
-  m_SortingLayerID: -1437529033
+  m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &774156319508622026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4071927164928867544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816bd3b28037e08428591f2640644918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  targetInventory: 
+  equipment: {fileID: 209626275938829576, guid: c49c9d2bda9cff949a3576dfd1448e3f,
+    type: 3}
 --- !u!1 &4071927165318054079
 GameObject:
   m_ObjectHideFlags: 0
