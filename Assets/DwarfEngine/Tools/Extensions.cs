@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 namespace DwarfEngine
 {
@@ -28,6 +29,7 @@ namespace DwarfEngine
             return Mathf.Round(value * roundTo) / (float) roundTo;
         }
 
+        #region Vector Extensions
         public static Vector3 ToVector3(this Vector2 vector, float z = 0)
         {
             return new Vector3(vector.x, vector.y, z);
@@ -42,5 +44,16 @@ namespace DwarfEngine
         {
             return new Vector2(vector.x, vector.y);
         }
+
+        public static float2 ToFloat2(this Vector2 vector)
+        {
+            return new float2(vector.x, vector.y);
+        }
+
+        public static float2 ToFloat2(this Vector3 vector)
+        {
+            return new float2(vector.x, vector.y);
+        }
+        #endregion
     }
 }

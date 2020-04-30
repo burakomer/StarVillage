@@ -69,6 +69,7 @@ namespace DwarfEngine
             #endregion
         }
 
+        // TODO : Try putting this inside an event callback in the RopeSimulationSystem
         private void Update()
         {
             var segments = entityManager.GetBuffer<RopeSegmentBufferElement>(simulationEntity);
@@ -84,10 +85,10 @@ namespace DwarfEngine
 
             var data = entityManager.GetComponentData<RopeSimulationData>(simulationEntity);
 
-            data.startPoint = new float2(startPoint.position.x, startPoint.position.y);
-            data.refPoint = new float2(refPoint.position.x, refPoint.position.y);
-            data.endPoint = new float2(endPoint.position.x, endPoint.position.y);
-            data.gravityPoint = new float2(gravityPoint.position.x, gravityPoint.position.y);
+            data.startPoint = startPoint.position.ToFloat2();
+            data.refPoint = refPoint.position.ToFloat2();
+            data.endPoint = endPoint.position.ToFloat2();
+            data.gravityPoint = gravityPoint.position.ToFloat2();
 
             entityManager.SetComponentData(simulationEntity, data);
         }

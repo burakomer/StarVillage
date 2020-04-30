@@ -165,7 +165,7 @@ MonoBehaviour:
   startPoint: {fileID: 4654691335674652791}
   endPoint: {fileID: 909796007186056470}
   ropeSegLen: 0.75
-  segmentCount: 25
+  segmentCount: 20
   lineWidth: 1
   gravityPoint: {fileID: 7520316508854398061}
   gravityStrength: 30

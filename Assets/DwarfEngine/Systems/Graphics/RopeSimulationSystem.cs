@@ -27,7 +27,7 @@ namespace DwarfEngine
                 }
 
                 // CONSTRAINTS
-                for (int iteration = 0; iteration < 50; iteration++)
+                for (int iteration = 0; iteration < 25; iteration++)
                 {
                     //Constrant to Start Point 
                     RopeSegment firstSegment = ropeSegments[0].value;
