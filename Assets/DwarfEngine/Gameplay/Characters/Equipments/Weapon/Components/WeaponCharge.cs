@@ -9,7 +9,7 @@ namespace DwarfEngine
     [DisallowMultipleComponent]
     public class WeaponCharge : WeaponComponent
     {
-        public float chargeTime;
+        public Stat chargeTime;
         public bool prematureAttack;
 
         protected float chargeTimer;
@@ -17,26 +17,27 @@ namespace DwarfEngine
 
         public IEnumerator StartCharging()
         {
+            Debug.Log(chargeTime.FloatValue);
             chargeCoroutine = StartCoroutine(_StartCharging());
             yield return chargeCoroutine;
         }
 
         public IEnumerator _StartCharging()
         {
-            if (chargeTime > 0)
+            if (chargeTime.FloatValue > Time.deltaTime)
             {
                 chargeTimer = 0;
 
                 do
                 {
                     chargeTimer += Time.deltaTime;
-                    if (chargeTimer >= chargeTime)
+                    if (chargeTimer >= chargeTime.FloatValue)
                     {
-                        chargeTimer = chargeTime;
+                        chargeTimer = chargeTime.FloatValue;
                         break;
                     }
                     yield return null;
-                } while (chargeTimer < chargeTime);
+                } while (chargeTimer < chargeTime.FloatValue);
             }
 
             chargeCoroutine = null;
@@ -57,7 +58,7 @@ namespace DwarfEngine
             StopCoroutine(chargeCoroutine);
             chargeCoroutine = null;
             
-            if ((chargeTimer < chargeTime) && prematureAttack)
+            if ((chargeTimer < chargeTime.FloatValue) && prematureAttack)
             {
                 weapon.ProcessAttack();
             }

@@ -25,10 +25,10 @@ namespace DwarfEngine
         protected bool stopped;
 
         #region Components
-        protected WeaponAim aim;
-        protected WeaponCharge charge;
-        protected WeaponResource resource;
-        protected WeaponProcessor processor;
+        [HideInInspector] public WeaponAim aim;
+        [HideInInspector] public WeaponCharge charge;
+        [HideInInspector] public WeaponResource resource;
+        [HideInInspector] public WeaponProcessor processor;
         #endregion
 
         #region Logic

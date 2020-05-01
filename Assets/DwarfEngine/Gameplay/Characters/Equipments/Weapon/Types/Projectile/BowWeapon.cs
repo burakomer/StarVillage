@@ -32,11 +32,11 @@ namespace DwarfEngine
 
             if (charge != null)
             {
-                currentProjectile.gameObject.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime).setEase(drawEase);
+                currentProjectile.gameObject.LeanMoveLocalX(arrowDrawDistance + fireOffset.x, charge.chargeTime.FloatValue).setEase(drawEase);
 
                 LeanTween.cancel(stringDrawPoint.gameObject);
                 //stringDrawPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
-                _rope.gravityPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
+                _rope.gravityPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime.FloatValue).setEase(drawEase);
 
                 //gameObject.LeanValue(value => 
                 //{

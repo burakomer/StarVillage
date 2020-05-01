@@ -6,17 +6,17 @@ namespace DwarfEngine
 {
     public delegate void StatEvent<T>(T stat);
 
-    public enum StatModifyType
+    public enum StatModifierType
     {
-        Add,
-        Remove
+        Flat,
+        Percentage
     }
     
     [Serializable]
     public class Stat
     {
         [SerializeField] private float baseValue;
-        public float BaseValue { get => baseValue; }
+        public float BaseValue { get => baseValue; set { baseValue = value; } }
 
         public Dictionary<GameObject, float> flatModifiers = new Dictionary<GameObject, float>();
         public Dictionary<GameObject, float> percentageModifiers = new Dictionary<GameObject, float>();
@@ -73,11 +73,19 @@ namespace DwarfEngine
         /// <summary>
         /// Add/Remove flat modifier.
         /// </summary>
-        public void ModifyStat(GameObject modifierSource, int modifyValue, StatModifyType modifyType)
+        public void AddModifier(GameObject modifierSource, int modifyValue, StatModifierType modifierType)
         {
-            switch (modifyType)
+            AddModifier(modifierSource, (float)modifyValue, modifierType);
+        }
+
+        /// <summary>
+        /// Add/Remove percentage modifier
+        /// </summary>
+        public void AddModifier(GameObject modifierSource, float modifyValue, StatModifierType modifierType)
+        {
+            switch (modifierType)
             {
-                case StatModifyType.Add:
+                case StatModifierType.Flat:
                     if (flatModifiers.ContainsKey(modifierSource))
                     {
                         flatModifiers[modifierSource] = modifyValue;
@@ -87,26 +95,7 @@ namespace DwarfEngine
                         flatModifiers.Add(modifierSource, modifyValue);
                     }
                     break;
-                case StatModifyType.Remove:
-                    if (flatModifiers.ContainsKey(modifierSource))
-                    {
-                        flatModifiers.Remove(modifierSource);
-                    }
-                    break;
-            }
-
-            isDirtyFloat = true;
-            isDirtyInt = true;
-        }
-
-        /// <summary>
-        /// Add/Remove percentage modifier
-        /// </summary>
-        public void ModifyStat(GameObject modifierSource, float modifyValue, StatModifyType modifyType)
-        {
-            switch (modifyType)
-            {
-                case StatModifyType.Add:
+                case StatModifierType.Percentage:
                     if (percentageModifiers.ContainsKey(modifierSource))
                     {
                         percentageModifiers[modifierSource] = modifyValue;
@@ -116,12 +105,22 @@ namespace DwarfEngine
                         percentageModifiers.Add(modifierSource, modifyValue);
                     }
                     break;
-                case StatModifyType.Remove:
-                    if (percentageModifiers.ContainsKey(modifierSource))
-                    {
-                        percentageModifiers.Remove(modifierSource);
-                    }
-                    break;
+            }
+
+            isDirtyFloat = true;
+            isDirtyInt = true;
+        }
+
+        public void RemoveModifier(GameObject modifierSource)
+        {
+            if (flatModifiers.ContainsKey(modifierSource))
+            {
+                flatModifiers.Remove(modifierSource);
+            }
+
+            if (percentageModifiers.ContainsKey(modifierSource))
+            {
+                percentageModifiers.Remove(modifierSource);
             }
 
             isDirtyFloat = true;

@@ -69,7 +69,6 @@ namespace DwarfEngine
             #endregion
         }
 
-        // TODO : Try putting this inside an event callback in the RopeSimulationSystem
         private void Update()
         {
             var segments = entityManager.GetBuffer<RopeSegmentBufferElement>(simulationEntity);

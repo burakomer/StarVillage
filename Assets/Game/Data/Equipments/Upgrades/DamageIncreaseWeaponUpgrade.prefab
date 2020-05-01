@@ -45,3 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageFlat: 10
   damagePercentage: 20
+  chargeTimeReduction: 0

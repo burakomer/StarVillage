@@ -20,7 +20,10 @@ namespace DwarfEngine
                 .Where(t => t && !_attacking)
                 .Subscribe(t =>
                 {
-                    _attacking = ((IActiveEquipment)Equipment).StartEquipment();
+                    if (Equipment != null)
+                    {
+                        _attacking = ((IActiveEquipment)Equipment).StartEquipment(); 
+                    }
                 })
                 .AddTo(this);
 
@@ -28,8 +31,11 @@ namespace DwarfEngine
                 .Where(t => !t && _attacking)
                 .Subscribe(t =>
                 {
-                    ((IActiveEquipment)Equipment).StopEquipment();
-                    _attacking = t;
+                    if (Equipment != null)
+                    {
+                        ((IActiveEquipment)Equipment).StopEquipment();
+                    }
+                    _attacking = t; 
                 })
                 .AddTo(this);
         }

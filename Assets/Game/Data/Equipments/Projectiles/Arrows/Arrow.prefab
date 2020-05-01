@@ -174,10 +174,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 8277292652939804218}
-  damage: 10
-  invincibilityDuration: 1
-  speed: 80
-  maxDistance: 500
+  damage:
+    baseValue: 0
+  speed:
+    baseValue: 0
+  maxDistance:
+    baseValue: 0
+  invincibilityDuration:
+    baseValue: 0
   knockbackForce: 5
   impactPoint: {fileID: 1658222479797175365}
   impactRadius: 1

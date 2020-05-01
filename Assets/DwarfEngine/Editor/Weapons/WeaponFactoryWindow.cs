@@ -129,7 +129,7 @@ namespace DwarfEngine
                 if (hasCharge)
                 {
                     var weaponCharge = weapon.AddComponent<WeaponCharge>();
-                    weaponCharge.chargeTime = chargeTime;
+                    weaponCharge.chargeTime.BaseValue = chargeTime;
                     weaponCharge.prematureAttack = prematureAttack;
                 }
 
