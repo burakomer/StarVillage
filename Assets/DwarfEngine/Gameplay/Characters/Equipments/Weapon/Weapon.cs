@@ -11,6 +11,7 @@ namespace DwarfEngine
     {
         [Header("Graphics")]
         public GameObject weaponModel;
+        [SerializeField] protected SpriteRenderer _renderer;
 
         [Header("Settings")]
         public Stat damage;
@@ -23,6 +24,7 @@ namespace DwarfEngine
         protected WeaponState state;
         protected Cooldown cooldown;
         protected bool stopped;
+
 
         #region Components
         [HideInInspector] public WeaponAim aim;
@@ -43,6 +45,8 @@ namespace DwarfEngine
             charge = GetComponent<WeaponCharge>();
             resource = GetComponent<WeaponResource>();
             processor = GetComponent<WeaponProcessor>();
+
+            //_renderer = weaponModel.GetComponent<SpriteRenderer>();
 
             //Init();
         }

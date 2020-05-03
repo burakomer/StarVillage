@@ -88,16 +88,16 @@ namespace DwarfEngine
                 }
             }
 
-            float columnCount = 0;
-            int rowCount = 0;
+            float columnCount;
+            int rowCount;
 
             for (int i = 0; i < rectChildren.Count; i++)
             {
                 rowCount = i / columns;
                 columnCount = i % columns;
 
-                float columnAlignment = GetAlignmentOnAxis(0);
-                float rowAlignment = GetAlignmentOnAxis(1);
+                //float columnAlignment = GetAlignmentOnAxis(0);
+                //float rowAlignment = GetAlignmentOnAxis(1);
 
                 var item = rectChildren[i];
 

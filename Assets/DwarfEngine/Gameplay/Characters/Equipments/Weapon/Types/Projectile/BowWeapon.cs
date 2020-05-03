@@ -12,6 +12,7 @@ namespace DwarfEngine
         public LeanTweenType drawEase;
 
         private float stringDrawDistance;
+        private Color startingColor;
 
         private RopeRenderer _rope;
         
@@ -23,6 +24,7 @@ namespace DwarfEngine
 
             //stringLoosePoint = stringDrawPoint.transform.localPosition.x;
             stringDrawDistance = (arrowDrawDistance); //+ stringLoosePoint) * -10f;
+            startingColor = _renderer.material.GetColor("_Color");
         }
 
         protected override void PrepareAttack()
@@ -38,11 +40,12 @@ namespace DwarfEngine
                 //stringDrawPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime).setEase(drawEase);
                 _rope.gravityPoint.LeanMoveLocalX(stringDrawDistance, charge.chargeTime.FloatValue).setEase(drawEase);
 
-                //gameObject.LeanValue(value => 
-                //{
-                //    _rope.gravityX += value;
-                //}, 
-                //0f, stringDrawDistance, charge.chargeTime);
+                
+                gameObject.LeanValue((value) => 
+                {
+                    _renderer.material.SetColor("_Color", value);
+                },
+                startingColor, startingColor * 2f, charge.chargeTime.FloatValue);
             }
             else
             {
@@ -58,16 +61,15 @@ namespace DwarfEngine
         {
             base.Attack();
 
-            //LeanTween.cancel(stringDrawPoint.gameObject);
-            //stringDrawPoint.LeanMoveLocalX(stringLoosePoint, STRING_RELEASE_TWEEN_TIME).setEaseOutElastic();
-
             LeanTween.cancel(_rope.gravityPoint.gameObject);
             _rope.gravityPoint.localPosition = Vector3.zero;
-            //_rope.gravityX = 0f;
-
+            
             LeanTween.cancel(weaponModel);
             weaponModel.transform.localScale = Vector3.one;
             weaponModel.LeanScale(new Vector3(1f, 1.35f, 1f), STRING_RELEASE_TWEEN_TIME).setEasePunch();
+
+            LeanTween.cancel(gameObject);
+            _renderer.material.SetColor("_Color", startingColor);
         }
 
         protected override void OnStopEquipment()

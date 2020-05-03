@@ -22,7 +22,7 @@ namespace DwarfEngine
                 {
                     if (Equipment != null)
                     {
-                        _attacking = ((IActiveEquipment)Equipment).StartEquipment(); 
+                        _attacking = (Equipment as IActiveEquipment).StartEquipment(); 
                     }
                 })
                 .AddTo(this);
@@ -33,7 +33,7 @@ namespace DwarfEngine
                 {
                     if (Equipment != null)
                     {
-                        ((IActiveEquipment)Equipment).StopEquipment();
+                        (Equipment as IActiveEquipment).StopEquipment();
                     }
                     _attacking = t; 
                 })
@@ -44,11 +44,11 @@ namespace DwarfEngine
         {
             base.Init();
 
-            if (Equipment != null)
-            {
-                Equipment = Instantiate(Equipment, handContainer);
-                Equipment.SetOwner(_character);
-            }
+            //if (Equipment != null)
+            //{
+            //    Equipment = Instantiate(Equipment, handContainer);
+            //    Equipment.SetOwner(_character);
+            //}
         }
 
         public override Equipment Equip(Weapon newEquipment)

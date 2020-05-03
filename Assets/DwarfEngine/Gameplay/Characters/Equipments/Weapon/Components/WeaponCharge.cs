@@ -17,7 +17,6 @@ namespace DwarfEngine
 
         public IEnumerator StartCharging()
         {
-            Debug.Log(chargeTime.FloatValue);
             chargeCoroutine = StartCoroutine(_StartCharging());
             yield return chargeCoroutine;
         }
