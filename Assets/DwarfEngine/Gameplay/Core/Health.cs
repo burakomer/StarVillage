@@ -8,6 +8,8 @@ namespace DwarfEngine
 {
     public class Health : MonoBehaviour, IProgressSource
     {
+        public const float INVINCIBILITY_DURATION = 0.5f;
+
         public IntReactiveProperty currentHealth;
         public Subject<float> currentHealthNormalized { get; private set; }
         public ReadOnlyReactiveProperty<bool> isAlive { get; protected set; }
@@ -36,14 +38,21 @@ namespace DwarfEngine
         protected virtual void Start()
         {
             currentHealth = new IntReactiveProperty(maximumHealth); // Set current health to max health
+            currentHealthNormalized = new Subject<float>();
+
+            //currentHealth
+            //    .Select(health => (float) health / maximumHealth) // Connect normalized value to actual value
+            //    .Subscribe(currentHealthNormalized)
+            //    .AddTo(this);
 
             isAlive = currentHealth
-                .Select(health => health <= 0) // isAlive is true when health is bigger than 0, false otherwise
+                .Select(health => health > 0) // isAlive is true when health is bigger than 0, false otherwise
                 .ToReadOnlyReactiveProperty();
 
             if (hasHealthBar)
             {
                 UIManager.Instance.SetProgressBar(gameObject, this, currentHealthNormalized); // Set up the health bar
+                currentHealthNormalized.OnNext(currentHealth.Value); // Set health bar value for the first time 
             }
 
             // TODO : Resolve
@@ -99,6 +108,8 @@ namespace DwarfEngine
 
             if (currentHealth.Value <= 0)
             {
+                currentHealth.Value = 0;
+
                 Kill();
                 return;
             }

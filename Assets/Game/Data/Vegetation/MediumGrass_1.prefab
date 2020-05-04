@@ -256,6 +256,8 @@ MonoBehaviour:
   idleEaseType: 16
   swingStrength: 40
   swingTime: 1
+  idleSwingAnchor: {fileID: 4802864080390619651}
+  hitSwingAnchor: {fileID: 3070007133037005524}
 --- !u!1 &9026861605439688766
 GameObject:
   m_ObjectHideFlags: 0

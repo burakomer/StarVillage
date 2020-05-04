@@ -40,6 +40,11 @@ namespace DwarfEngine
             return new Vector3(x, y, z) * value;
         }
 
+        public static Vector3 ToVector3(this Vector2Int vector, float z = 0)
+        {
+            return new Vector3(vector.x, vector.y, z);
+        }
+
         public static Vector2 ToVector2(this Vector3 vector)
         {
             return new Vector2(vector.x, vector.y);

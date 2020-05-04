@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721d51122a6c5174391d3163a5b2cad1, type: 3}
+  m_Name: RedSuperblade_Attack
+  m_EditorClassIdentifier: 
+  nodeName: WeaponAttack
+  framesPerSecond: 20
+  loop: 0
+  sprites:
+  - {fileID: 6230524607913200770, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: 3494595240521401636, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: -1052479016194568184, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: -5726329162955156235, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: -6290327659877148275, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: 5876306872770409635, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: -7641020292022309644, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: 2299604734700581799, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}

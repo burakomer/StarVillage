@@ -12,7 +12,7 @@ namespace DwarfEngine
         public Camera UICamera;
         public Canvas canvas;
 
-        public List<ProgressBar> bars;
+        public List<ProgressBarBase> bars;
 
         public event Action<string, float> OnBarDamage;
         public event Action<string, float> OnBarHeal;
@@ -23,15 +23,21 @@ namespace DwarfEngine
 
             UICamera = GetComponent<Camera>();
             canvas = GetComponentInChildren<Canvas>();
-
-            bars = FindObjectsOfType<ProgressBar>().ToList();
+            
+            bars = FindObjectsOfType<ProgressBarBase>().ToList();
         }
 
         #region Progress Bar Controls
 
         public void SetProgressBar(GameObject gObj, IProgressSource source, IObservable<float> value)
         {
-            ProgressBar bar = bars.Find(b => b.name == source.targetBar) ?? ProgressBarFactory.CreateBar(gObj, source);
+            ProgressBarBase bar = bars.Find(b => b.barName == source.targetBar);
+
+            if (bar == null)
+            {
+                bar = FilledProgressBar.Create(gObj, source);
+            }
+
             value.Subscribe(bar);
         }
 

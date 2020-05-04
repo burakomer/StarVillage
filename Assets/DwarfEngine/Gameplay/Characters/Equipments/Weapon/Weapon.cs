@@ -19,12 +19,12 @@ namespace DwarfEngine
         public LayerMask hitMask;
 
         [Header("Animator Parameters")]
-        public string weaponAnimName;
+        public string weaponIdleAnim;
+        public string weaponAttackAnim;
 
         protected WeaponState state;
         protected Cooldown cooldown;
         protected bool stopped;
-
 
         #region Components
         [HideInInspector] public WeaponAim aim;
@@ -191,7 +191,7 @@ namespace DwarfEngine
                     {
                         if (resource != null)
                         {
-                            processor.ProcessAttack(Attack, () => StopWeapon(), stopped, () =>
+                            processor.ProcessAttack(Attack(), () => StopWeapon(), stopped, () =>
                             {
                                 if (!resource.Consume())
                                 {
@@ -203,12 +203,12 @@ namespace DwarfEngine
                         }
                         else
                         {
-                            processor.ProcessAttack(Attack, () => StopWeapon(), stopped);
+                            processor.ProcessAttack(Attack(), () => StopWeapon(), stopped);
                         }
                     }
                     else // Regular weapon processing
                     {
-                        Attack();
+                        StartCoroutine(Attack());
                         StopWeapon();
                     }
                     break;
@@ -253,7 +253,7 @@ namespace DwarfEngine
         /// <summary>
         /// Handle shooting and animation logic here.
         /// </summary>
-        protected abstract void Attack();
+        protected abstract IEnumerator Attack();
 
         /// <summary>
         /// Implement logic here for when the StopEquipment is called.

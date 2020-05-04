@@ -10,7 +10,7 @@ namespace DwarfEngine
         public Stat damage;
         public Stat speed;
         public Stat maxDistance;
-        public Stat invincibilityDuration;
+        public float invincibilityDuration;
 
         [Space]
         
@@ -85,7 +85,7 @@ namespace DwarfEngine
                     Health _health = hitObj.GetComponent<Health>();
                     if (_health != null)
                     {
-                        _health.Damage(damage.IntValue, invincibilityDuration.FloatValue);
+                        _health.Damage(damage.IntValue, invincibilityDuration);
                     }
 
                     if (knockbackForce > 0)

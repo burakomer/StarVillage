@@ -10,6 +10,7 @@ namespace DwarfEngine
     public class WeaponCharge : WeaponComponent
     {
         public Stat chargeTime;
+        public bool cancellable;
         public bool prematureAttack;
 
         protected float chargeTimer;
@@ -52,6 +53,11 @@ namespace DwarfEngine
             if (chargeCoroutine == null)
             {
                 return false;
+            }
+
+            if (!cancellable)
+            {
+                return true;
             }
 
             StopCoroutine(chargeCoroutine);

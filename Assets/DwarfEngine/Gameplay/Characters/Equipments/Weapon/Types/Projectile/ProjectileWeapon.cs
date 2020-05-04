@@ -44,6 +44,7 @@ namespace DwarfEngine
 			p.maxDistance = maxDistance;
 			p.hitMask = hitMask;
 			p.fireOffset = fireOffset;
+			p.invincibilityDuration = Health.INVINCIBILITY_DURATION;
 		}
 
 		/// <summary>
@@ -62,13 +63,15 @@ namespace DwarfEngine
 			currentProjectile.gameObject.SetActive(true);
 		}
 
-		protected override void Attack()
+		protected override IEnumerator Attack()
 		{
 			if (currentProjectile != null)
 			{
 				//Debug.Log($"Damage: {damage.IntValue}");
 				ShootProjectile();
 			}
+
+			yield return null;
 		}
 
 		private void ShootProjectile()

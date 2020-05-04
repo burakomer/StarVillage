@@ -7,9 +7,9 @@ namespace DwarfEngine
 {
     public class SingleShotProcessor : WeaponProcessor
     {
-        protected override void AttackLogic(Action AttackMethod, Action StopMethod, Action ConsumeMethod = null)
+        protected override IEnumerator AttackLogic(IEnumerator AttackMethod, Action StopMethod, Action ConsumeMethod = null)
         {
-            AttackMethod();
+            yield return StartCoroutine(AttackMethod);
             StopMethod();
         }
     }

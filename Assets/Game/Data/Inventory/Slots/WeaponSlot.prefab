@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232843994186035579}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -19}
   m_SizeDelta: {x: 74, y: 63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2711628186344284113
@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 98228376592042056}
   - component: {fileID: 4006433921011726412}
   - component: {fileID: 2574097391459614193}
+  - component: {fileID: 1149787596}
   m_Layer: 5
   m_Name: Star
   m_TagString: Untagged
@@ -414,6 +415,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &1149787596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4494232456798419752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9efe7069c73152940bfbf2877f33c7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barName: StarPower
+  fillAmount: 1
+  startPoint: {x: 0, y: 0}
+  endPoint: {x: 0, y: -19}
+  barImage: {fileID: 3444070861610645206}
 --- !u!1 &6680558698447896424
 GameObject:
   m_ObjectHideFlags: 0

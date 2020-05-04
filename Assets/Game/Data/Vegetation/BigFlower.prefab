@@ -145,6 +145,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8190169020746588170}
   - component: {fileID: 3211357997484497715}
+  - component: {fileID: 5170669573072837948}
+  - component: {fileID: 4727642176865396284}
+  - component: {fileID: 8359215222901601738}
   m_Layer: 10
   m_Name: BigFlower
   m_TagString: Untagged
@@ -179,6 +182,73 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!50 &5170669573072837948
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190169020746588171}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!61 &4727642176865396284
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190169020746588171}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 13, y: 12}
+    newSize: {x: 10, y: 8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 9, y: 6}
+  m_EdgeRadius: 0
+--- !u!114 &8359215222901601738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190169020746588171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c646c3d03859554aab33ee1d58f0aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleSwing: 1
+  clampAngle: 30
+  idleSwingTime: 8
+  idleEaseType: 16
+  swingStrength: 60
+  swingTime: 3
+  idleSwingAnchor: {fileID: 6017402539315365605}
+  hitSwingAnchor: {fileID: 7114559304679548827}
 --- !u!1 &8190169021814769308
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,9 +259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8190169021814769311}
   - component: {fileID: 8190169021814769296}
-  - component: {fileID: 234677683561316344}
-  - component: {fileID: 5312106733524585380}
-  - component: {fileID: 8190169021814769310}
   m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
@@ -264,71 +331,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &234677683561316344
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190169021814769308}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
---- !u!61 &5312106733524585380
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190169021814769308}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1, y: -2}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 13, y: 12}
-    newSize: {x: 10, y: 8}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 9, y: 6}
-  m_EdgeRadius: 0
---- !u!114 &8190169021814769310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190169021814769308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c646c3d03859554aab33ee1d58f0aa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idleSwing: 1
-  clampAngle: 30
-  idleSwingTime: 8
-  idleEaseType: 16
-  swingStrength: 60
-  swingTime: 3
 --- !u!1 &9026193395618203377
 GameObject:
   m_ObjectHideFlags: 0

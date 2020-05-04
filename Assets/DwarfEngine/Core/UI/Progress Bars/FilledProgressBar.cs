@@ -8,20 +8,19 @@ namespace DwarfEngine
     /// <summary>
     /// A UI element that displays the normalized graphical representation of a progress.
     /// </summary>
-    public class ProgressBar : MonoBehaviour, IObserver<float>
+    public class FilledProgressBar : ProgressBarBase
     {
-        [Header("Properties")]
-        public string barName;
         public bool hideAtFull;
 
         [SerializeField] private Image frontBar;
         [SerializeField] private Image delayedBar;
         [SerializeField] private Image background;
 
-        private const float damageBarFadeTimerMax = 0.5f;
-        private const float fadeAmount = 2.5f;
-        private float damageBarFadeTimer;
-        private bool damageBarInProgress = false;
+        private const float DAMAGE_BAR_DELAY = 0.5f;
+        private const float FADE_AMOUNT_EACH_TICK = 2.5f;
+
+        private float damageBarDelayTimer;
+        private bool delayedBarDamageInProgress = false;
 
         private void OnEnable()
         {
@@ -33,7 +32,7 @@ namespace DwarfEngine
             }
         }
 
-        protected virtual void OnBarDamage(float damageNormalized)
+        protected virtual void OnBarDamage(float valueNormalized)
         {
             if (frontBar.color.a < 0.05f)
             {
@@ -42,13 +41,13 @@ namespace DwarfEngine
                 background.color = new Color(1, 1, 1, 1);
             }
 
-            frontBar.fillAmount = damageNormalized;
-            damageBarFadeTimer = damageBarFadeTimerMax;
+            frontBar.fillAmount = valueNormalized;
+            damageBarDelayTimer = DAMAGE_BAR_DELAY;
             if (delayedBar != null)
             {
-                if (!damageBarInProgress)
+                if (!delayedBarDamageInProgress)
                 {
-                    StartCoroutine(DamageBarImage());
+                    StartCoroutine(DamageDelayedBar());
                 }
             }
 
@@ -60,30 +59,31 @@ namespace DwarfEngine
             }
         }
 
-        protected virtual void OnBarHeal(float healNormalized)
+        protected virtual void OnBarHeal(float valueNormalized)
         {
-            frontBar.fillAmount = healNormalized;
+            frontBar.fillAmount = valueNormalized;
+            delayedBar.fillAmount = valueNormalized;
         }
 
-        protected virtual IEnumerator DamageBarImage()
+        protected virtual IEnumerator DamageDelayedBar()
         {
-            damageBarInProgress = true;
-            while (damageBarFadeTimer > 0)
+            delayedBarDamageInProgress = true;
+            while (damageBarDelayTimer > 0)
             {
-                damageBarFadeTimer -= Time.deltaTime;
+                damageBarDelayTimer -= Time.deltaTime;
                 yield return null;
             }
 
             while (delayedBar.fillAmount > frontBar.fillAmount)
             {
-                delayedBar.fillAmount -= fadeAmount * Time.deltaTime;
+                delayedBar.fillAmount -= FADE_AMOUNT_EACH_TICK * Time.deltaTime;
                 yield return null;
             }
 
-            damageBarInProgress = false;
+            delayedBarDamageInProgress = false;
         }
 
-        public void OnNext(float value)
+        public override void OnNext(float value)
         {
             if (delayedBar.fillAmount > value)
             {
@@ -100,19 +100,18 @@ namespace DwarfEngine
             }
         }
 
-        public void OnError(Exception error)
-        {
-            Debug.LogError($"An error occured on: {barName}");
-        }
-
-        public void OnCompleted()
-        {
-
-        }
-
         protected virtual void HandleOnZero()
         {
 
+        }
+
+        public static FilledProgressBar Create(GameObject obj, IProgressSource source)
+        {
+            RectTransform barCanvas = Instantiate(GameAssets.Instance.GenericHealthBar.GetComponent<RectTransform>(), obj.transform);
+            barCanvas.localPosition = new Vector3(0f, 0f, 0f) + source.barOffset;
+            FilledProgressBar newBar = barCanvas.GetComponentInChildren<FilledProgressBar>();
+            newBar.barName = source.targetBar;
+            return newBar;
         }
     }
 }

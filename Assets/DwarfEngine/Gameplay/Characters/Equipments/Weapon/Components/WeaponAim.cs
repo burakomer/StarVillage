@@ -10,6 +10,8 @@ namespace DwarfEngine
     public class WeaponAim : WeaponComponent
     {
         public AimType aimType;
+
+        public float currentAngle;
         
         public float gripAngleOffset;
         public float gripLength;
@@ -173,11 +175,14 @@ namespace DwarfEngine
             }
 
             float angle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            bool shouldFlip = angle > 90 || angle < -90;
 
-            weapon.weaponModel.transform.rotation = Quaternion.Euler(0f, 0f, angle + gripAngleOffset);
+            weapon.weaponModel.transform.rotation = Quaternion.Euler(0f, 0f, angle + (shouldFlip ? -gripAngleOffset : gripAngleOffset));
             weapon.weaponModel.transform.position = gripPos + (gripLength * (difference != Vector3.zero ? difference : Vector3.right));
 
-            if (angle > 90 || angle < -90)
+            currentAngle = weapon.weaponModel.transform.eulerAngles.z;
+
+            if (shouldFlip)
             {
                 weapon.weaponModel.transform.rotation = Quaternion.Euler(0f, 180f, 180f - weapon.weaponModel.transform.eulerAngles.z);
             }

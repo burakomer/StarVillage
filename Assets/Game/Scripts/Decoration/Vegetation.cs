@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
-    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class Vegetation : MonoBehaviour
     {
         public bool idleSwing;
@@ -15,16 +15,14 @@ namespace DwarfEngine
         [Range(0f, 90f)]
         public float swingStrength;
         public float swingTime;
-        
-        private Transform idleSwingAnchor;
-        private Transform hitSwingAnchor;
-        private BoxCollider2D _collider;
+
+        private Collider2D _collider;
+        [SerializeField] private Transform idleSwingAnchor;
+        [SerializeField] private Transform hitSwingAnchor;
 
         private IEnumerator Start()
         {
-            idleSwingAnchor = transform.parent.parent;
-            hitSwingAnchor = transform.parent;
-            _collider = GetComponent<BoxCollider2D>();
+            _collider = GetComponent<Collider2D>();
             _collider.isTrigger = true;
 
             LeanTween.init(1000, 1000);

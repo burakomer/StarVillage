@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace DwarfEngine
 {
@@ -57,9 +58,9 @@ namespace DwarfEngine
             }
         }
 
-        protected override void Attack()
+        protected override IEnumerator Attack()
         {
-            base.Attack();
+            yield return StartCoroutine(base.Attack());
 
             LeanTween.cancel(_rope.gravityPoint.gameObject);
             _rope.gravityPoint.localPosition = Vector3.zero;
@@ -70,13 +71,18 @@ namespace DwarfEngine
 
             LeanTween.cancel(gameObject);
             _renderer.material.SetColor("_Color", startingColor);
+
+            yield return null;
         }
 
         protected override void OnStopEquipment()
         {
             if (currentProjectile != null && charge != null)
             {
-                LeanTween.cancel(currentProjectile.gameObject);
+                if (charge.cancellable)
+                {
+                    LeanTween.cancel(currentProjectile.gameObject); 
+                }
             }
             base.OnStopEquipment();
         }

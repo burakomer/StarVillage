@@ -10,9 +10,9 @@ namespace DwarfEngine
         [Header("Rake Settings")]
         public float tickFrequency;
 
-        protected override void AttackLogic(Action AttackMethod, Action StopMethod, Action ConsumeMethod = null)
+        protected override IEnumerator AttackLogic(IEnumerator AttackMethod, Action StopMethod, Action ConsumeMethod = null)
         {
-            
+            yield return null;
         }
 
         private IEnumerator Rake(Action AttackMethod, Action StopMethod)

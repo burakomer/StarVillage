@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Animator
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Player
   - Props
-  - Grass
+  - DestroyableProp
   - 
   - 
   - 
@@ -36,7 +37,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - NullLayer
   m_SortingLayers:
   - name: Background
     uniqueID: 2861129163
