@@ -68,6 +68,27 @@ TextureImporter:
   - first:
       213: 164114653117449881
     second: HoshinuWeapons_Staff
+  - first:
+      213: 1021646145198562732
+    second: HoshinuWeapons_Bow
+  - first:
+      213: 6210607325586996260
+    second: HoshinuWeapons_Sword
+  - first:
+      213: 8751497643171413502
+    second: HoshinuWeapons_7
+  - first:
+      213: 8633860071872361707
+    second: HoshinuWeapons_8
+  - first:
+      213: -8056203728218373356
+    second: HoshinuWeapons_9
+  - first:
+      213: 164114653117449881
+    second: HoshinuWeapons_10
+  - first:
+      213: 6132245851634974965
+    second: HoshinuWeapons_Staff
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -206,27 +227,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HoshinuWeapons_7
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3a4baae77f5dc8150800000000000000
-      internalID: 5876306872770409635
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: HoshinuWeapons_2
       rect:
         serializedVersion: 2
@@ -332,6 +332,48 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: HoshinuWeapons_10
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9968081586d074200800000000000000
+      internalID: 164114653117449881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HoshinuWeapons_7
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efd76e13db0937970800000000000000
+      internalID: 8751497643171413502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: HoshinuWeapons_8
       rect:
         serializedVersion: 2
@@ -346,8 +388,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fc657c3784a5f590800000000000000
-      internalID: -7641020292022309644
+      spriteID: be47160cdf1a1d770800000000000000
+      internalID: 8633860071872361707
       vertices: []
       indices: 
       edges: []
@@ -367,8 +409,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a372a78256d9ef10800000000000000
-      internalID: 2299604734700581799
+      spriteID: 413cd5d846d923090800000000000000
+      internalID: -8056203728218373356
       vertices: []
       indices: 
       edges: []
@@ -388,8 +430,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9968081586d074200800000000000000
-      internalID: 164114653117449881
+      spriteID: 5f0c01eac1d1a1550800000000000000
+      internalID: 6132245851634974965
       vertices: []
       indices: 
       edges: []

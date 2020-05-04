@@ -52,7 +52,7 @@ MonoBehaviour:
   damage:
     baseValue: 10
   rechargeTime:
-    baseValue: 0.1
+    baseValue: 0
   hitMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -64,7 +64,7 @@ MonoBehaviour:
   processor: {fileID: 0}
   damageAreaSize: {x: 36, y: 90}
   damageAreaOffset: {x: 18, y: 0}
-  attackAnimationTime: 0.4
+  attackAnimationTime: 0.45
 --- !u!114 &3418113919846561174
 MonoBehaviour:
   m_ObjectHideFlags: 0
