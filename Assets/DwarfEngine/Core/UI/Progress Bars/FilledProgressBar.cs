@@ -43,6 +43,7 @@ namespace DwarfEngine
 
             frontBar.fillAmount = valueNormalized;
             damageBarDelayTimer = DAMAGE_BAR_DELAY;
+            
             if (delayedBar != null)
             {
                 if (!delayedBarDamageInProgress)
@@ -80,6 +81,8 @@ namespace DwarfEngine
                 yield return null;
             }
 
+            delayedBar.fillAmount = frontBar.fillAmount;
+
             delayedBarDamageInProgress = false;
         }
 
@@ -93,22 +96,12 @@ namespace DwarfEngine
             {
                 OnBarHeal(value);
             }
-
-            if (value <= 0)
-            {
-                HandleOnZero();
-            }
-        }
-
-        protected virtual void HandleOnZero()
-        {
-
         }
 
         public static FilledProgressBar Create(GameObject obj, IProgressSource source)
         {
             RectTransform barCanvas = Instantiate(GameAssets.Instance.GenericHealthBar.GetComponent<RectTransform>(), obj.transform);
-            barCanvas.localPosition = new Vector3(0f, 0f, 0f) + source.barOffset;
+            barCanvas.localPosition = source.barOffset;
             FilledProgressBar newBar = barCanvas.GetComponentInChildren<FilledProgressBar>();
             newBar.barName = source.targetBar;
             return newBar;

@@ -85,7 +85,7 @@ namespace DwarfEngine
                     Health _health = hitObj.GetComponent<Health>();
                     if (_health != null)
                     {
-                        _health.Damage(damage.IntValue, invincibilityDuration);
+                        _health.Damage(damage.IntValue, invincibilityDuration, gameObject);
                     }
 
                     if (knockbackForce > 0)

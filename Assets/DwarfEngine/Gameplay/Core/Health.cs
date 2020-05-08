@@ -14,13 +14,20 @@ namespace DwarfEngine
         public Subject<float> currentHealthNormalized { get; private set; }
         public ReadOnlyReactiveProperty<bool> isAlive { get; protected set; }
 
+        /// <summary>
+        /// Which direction the damage came from.
+        /// </summary>
+        public event System.Action<Vector2> OnDamage;
+        
+        [Header("Events")]
+        public UnityEvent OnKill;
+
         [Header("Properties")]
         [SerializeField] private bool invincible;
         public int maximumHealth;
         public GameObject model;
 
-        [Header("Death")] 
-        public UnityEvent OnKill;
+        [Header("Death")]
         public bool destroyOnDeath;
         public float timeBeforeDestroy = 5f;
 
@@ -40,10 +47,10 @@ namespace DwarfEngine
             currentHealth = new IntReactiveProperty(maximumHealth); // Set current health to max health
             currentHealthNormalized = new Subject<float>();
 
-            //currentHealth
-            //    .Select(health => (float) health / maximumHealth) // Connect normalized value to actual value
-            //    .Subscribe(currentHealthNormalized)
-            //    .AddTo(this);
+            currentHealth
+                .Select(health => (float) health / maximumHealth) // Connect normalized value to actual value
+                .Subscribe(currentHealthNormalized)
+                .AddTo(this);
 
             isAlive = currentHealth
                 .Select(health => health > 0) // isAlive is true when health is bigger than 0, false otherwise
@@ -51,7 +58,7 @@ namespace DwarfEngine
 
             if (hasHealthBar)
             {
-                UIManager.Instance.SetProgressBar(gameObject, this, currentHealthNormalized); // Set up the health bar
+                UIManager.Instance.SetProgressBar(model, this, currentHealthNormalized); // Set up the health bar
                 currentHealthNormalized.OnNext(currentHealth.Value); // Set health bar value for the first time 
             }
 
@@ -71,7 +78,7 @@ namespace DwarfEngine
             currentHealth.Value = Mathf.Min(currentHealth.Value + healAmount, maximumHealth);
         }
 
-        public virtual void Damage(int damageAmount, float invincibilityDuration, GameObject damageDealer = null)
+        public virtual void Damage(int damageAmount, float invincibilityDuration, GameObject damageDealer)
         {
             if (invincible)
             {
@@ -82,6 +89,8 @@ namespace DwarfEngine
             {
                 return;
             }
+
+            OnDamage?.Invoke((transform.position - damageDealer.transform.position).normalized);
 
             //gameObject.transform.position += Vector3.zero;
             currentHealth.Value -= damageAmount;

@@ -12,7 +12,7 @@ namespace DwarfEngine
 
         [Header("Assets")] 
 
-        public FilledProgressBar GenericHealthBar;
+        public Canvas GenericHealthBar;
         public TextPopup GenericTextPopup;
 
         #region Custom Assets

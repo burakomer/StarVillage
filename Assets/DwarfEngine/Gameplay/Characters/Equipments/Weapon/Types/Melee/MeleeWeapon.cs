@@ -67,7 +67,7 @@ namespace DwarfEngine
             {
                 if (hitObject != null)
                 {
-                    hitObject.SendMessage("OnTriggerEnter2D", owner.collider);
+                    //hitObject.SendMessage("OnTriggerEnter2D", owner.collider);
                     Health hitObjHealth = hitObject.GetComponent<Health>();
                     if (hitObjHealth != null && hitObjHealth.isAlive.Value)
                     {

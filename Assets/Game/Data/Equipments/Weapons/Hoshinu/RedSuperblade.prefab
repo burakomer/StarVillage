@@ -92,8 +92,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimType: 3
   currentAngle: 0
-  gripAngleOffset: -25
-  gripLength: 12
+  gripAngleOffset: 0
+  gripLength: 16
 --- !u!114 &8086030050689850447
 MonoBehaviour:
   m_ObjectHideFlags: 0

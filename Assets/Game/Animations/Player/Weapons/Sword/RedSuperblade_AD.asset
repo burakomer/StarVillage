@@ -17,9 +17,11 @@ MonoBehaviour:
     transitions:
       array:
       - WeaponAttack
+      - WeaponIdle
   - node: {fileID: 11400000, guid: 16d4b6e245eabca478e6aae0c26ca9b4, type: 2}
     transitions:
       array:
       - WeaponIdle
+      - WeaponAttack
   blendParameters:
     array: []
