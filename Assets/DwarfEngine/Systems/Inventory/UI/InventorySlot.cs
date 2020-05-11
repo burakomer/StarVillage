@@ -8,10 +8,10 @@ namespace DwarfEngine
 {
     public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IDropHandler
     {
-        public ItemObject Item => item;
+        public ItemAsset Item => item;
         
         [Header("Slot")]
-        [SerializeField] private ItemObject item;
+        [SerializeField] private ItemAsset item;
 
         [Header("Graphics")]
         [SerializeField] private Image iconImage;
@@ -20,7 +20,7 @@ namespace DwarfEngine
         public Sprite deselectedSprite;
         public Sprite selectedSprite;
         
-        public void SetItem(ItemObject newItem)
+        public void SetItem(ItemAsset newItem)
         {
             item = newItem;
             if (item != null)
@@ -33,9 +33,9 @@ namespace DwarfEngine
             }
         }
 
-        public ItemObject ReplaceItem(ItemObject newItem)
+        public ItemAsset ReplaceItem(ItemAsset newItem)
         {
-            ItemObject oldItem = item;
+            ItemAsset oldItem = item;
             SetItem(newItem);
             return oldItem;
         }

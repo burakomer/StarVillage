@@ -16,13 +16,14 @@ namespace DwarfEngine
                 {
                     if (items[i] != null)
                     {
+                        //StartCoroutine((items[i] as IEquipmentItem).Equip(owner.equipmentManager, i));
                         (items[i] as IEquipmentItem).Equip(owner.equipmentManager, i);
                     }
                 } 
             }
         }
 
-        public override bool PlaceItem(ItemObject newItem)
+        public override bool PlaceItem(ItemAsset newItem)
         {
             // First, check for an empty slot and try to equip the item
             for (int i = 0; i < size; i++)
@@ -38,6 +39,8 @@ namespace DwarfEngine
                     {
                         return false;
                     }
+
+                    //StartCoroutine((newItem as IEquipmentItem).Equip(owner.equipmentManager, i));
                 }
             }
 
@@ -80,7 +83,7 @@ namespace DwarfEngine
                 {
                     if ((targetInventory[targetIndex] as IEquipmentItem).Equip(owner.equipmentManager, startingIndex))
                     {
-                        ItemObject tempItem = targetInventory[targetIndex];
+                        ItemAsset tempItem = targetInventory[targetIndex];
                         targetInventory[targetIndex] = items[startingIndex];
                         items[startingIndex] = tempItem;
                     }

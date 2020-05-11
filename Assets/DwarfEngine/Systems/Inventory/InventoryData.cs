@@ -10,7 +10,7 @@ namespace DwarfEngine
     {
         public int[] itemIds;
 
-        public InventoryData(List<ItemObject> items)
+        public InventoryData(List<ItemAsset> items)
         {
             if (items.Capacity != 0)
             {

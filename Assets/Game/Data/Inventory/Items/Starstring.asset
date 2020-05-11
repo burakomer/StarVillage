@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   itemName: The Starstring
-  itemDescription: Shoots shiny stars.
+  itemDescription: Shoots shiny arrows.
   icon: {fileID: 3929415278074444336, guid: 95875b18a5127644fb5dc84aa235c853, type: 3}
+  itemObjectReference:
+    m_AssetGUID: 4b8d96e61ac021b42893079df5bf45dd
   itemObject: {fileID: 2672814406022411283, guid: 4b8d96e61ac021b42893079df5bf45dd,
     type: 3}
   targetInventory: PlayerWeapon

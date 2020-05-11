@@ -59,7 +59,7 @@ namespace DwarfEngine
             }
         }
 
-        public override bool PlaceItem(ItemObject newItem)
+        public override bool PlaceItem(ItemAsset newItem)
         {
             if (newItem is IStackableItem)
             {
@@ -114,7 +114,7 @@ namespace DwarfEngine
             }
             else // Basic storage item moving logic
             {
-                ItemObject tempItem = targetInventory[targetIndex];
+                ItemAsset tempItem = targetInventory[targetIndex];
                 targetInventory[targetIndex] = items[startingIndex];
                 items[startingIndex] = tempItem;
             }

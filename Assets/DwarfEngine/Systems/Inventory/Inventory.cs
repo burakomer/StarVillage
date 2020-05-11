@@ -9,10 +9,10 @@ namespace DwarfEngine
         public string inventoryName;
         public int size;
 
-        protected List<ItemObject> items;
+        protected List<ItemAsset> items;
         protected Character owner;
 
-        public ItemObject this[int index]
+        public ItemAsset this[int index]
         {
             get => items[index];
             set => items[index] = value;
@@ -21,7 +21,7 @@ namespace DwarfEngine
         #region Unity Methods
         private void Awake()
         {
-            items = new List<ItemObject>(size);
+            items = new List<ItemAsset>(size);
 
             for (int i = 0; i < size; i++)
             {
@@ -81,12 +81,12 @@ namespace DwarfEngine
         #endregion
         
         #region Abstract Methods
-        public abstract bool PlaceItem(ItemObject newItem);
+        public abstract bool PlaceItem(ItemAsset newItem);
         public abstract void Interact(int slotIndex);
         public abstract void MoveItem(Inventory targetInventory, int startingIndex, int targetIndex); 
         #endregion
 
-        public bool HasItem(ItemObject item)
+        public bool HasItem(ItemAsset item)
         {
             return items.Contains(item);
         }

@@ -1,6 +1,6 @@
 ﻿namespace DwarfEngine
 {
-    public class WeaponEquipmentInventory : EquipmentInventory<WeaponItemObject>
+    public class WeaponEquipmentInventory : EquipmentInventory<WeaponItemAsset>
     {
         protected override void PreInit()
         {

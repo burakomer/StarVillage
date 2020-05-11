@@ -21,15 +21,15 @@ namespace DwarfEngine
             }
         }
 
-        public ItemObject GetItemWithId(int id)
+        public ItemAsset GetItemWithId(int id)
         {
             return catalog
                 .Find(entry => entry.id == id).item;
         }
 
-        public List<ItemObject> GetItemsFromData(int[] ids)
+        public List<ItemAsset> GetItemsFromData(int[] ids)
         {
-            List<ItemObject> items = new List<ItemObject>();
+            List<ItemAsset> items = new List<ItemAsset>();
 
             if (ids != null)
             {
@@ -46,6 +46,6 @@ namespace DwarfEngine
     public class ItemDatabaseEntry
     {
         public int id;
-        public ItemObject item;
+        public ItemAsset item;
     }
 }
