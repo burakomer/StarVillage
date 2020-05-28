@@ -16,8 +16,6 @@ MonoBehaviour:
   framesPerSecond: 20
   loop: 0
   sprites:
-  - {fileID: 6230524607913200770, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
-  - {fileID: 3494595240521401636, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
   - {fileID: -1052479016194568184, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
   - {fileID: -5726329162955156235, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
   - {fileID: -6290327659877148275, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}

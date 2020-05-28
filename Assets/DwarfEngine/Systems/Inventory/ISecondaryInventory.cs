@@ -5,6 +5,9 @@
     /// </summary>
     public interface ISecondaryInventory
     {
+        /// <summary>
+        /// The inventory that it is connected to.
+        /// </summary>
         StorageInventory mainInventory { get; set; }
     }
 }

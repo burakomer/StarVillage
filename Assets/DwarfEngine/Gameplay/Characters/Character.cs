@@ -2,13 +2,25 @@
 
 namespace DwarfEngine
 {
+    public enum CharacterType { Player, AI }
+
+    /// <summary>
+    /// The essential component of a character object.
+    /// </summary>
     [RequireComponent(typeof(CharacterBrain), typeof(Health), typeof(Collider2D))]
     public class Character : MonoBehaviour
     {
         public bool isAlive => health.isAlive.Value;
         
+        /// <summary>
+        /// Name of the character. Used in the game UI.
+        /// </summary>
         [Header("Properties")]
         public string characterName;
+
+        /// <summary>
+        /// Type of the character.
+        /// </summary>
         public CharacterType characterType;
 
         #region Components
@@ -30,15 +42,16 @@ namespace DwarfEngine
             equipmentManager = GetComponent<CharacterEquipmentManager>();
         }
 
-        protected virtual void Start()
-        {
-
-        }
-
         #region Management Methods 
 
+        /// <summary>
+        /// Disables the character.
+        /// </summary>
+        /// <param name="modelDisabled"></param>
         public virtual void DisableCharacter(bool modelDisabled = false)
         {
+            // TODO: Disable the abilities too.
+
             brain.active = false;
             collider.enabled = false;
 
@@ -50,6 +63,4 @@ namespace DwarfEngine
 
         #endregion
     }
-
-    public enum CharacterType { Player, AI }
 }

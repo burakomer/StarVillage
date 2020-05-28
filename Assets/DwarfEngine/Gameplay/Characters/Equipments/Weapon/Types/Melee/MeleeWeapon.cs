@@ -24,6 +24,7 @@ namespace DwarfEngine
             _model = weaponModel.GetComponent<SpriteModel>();
 
             _hitCircleOrigin = new GameObject().transform;
+            _hitCircleOrigin.position = owner.transform.position;
             _hitCircleOrigin.position += damageAreaOffset.ToVector3();
             _hitCircleOrigin.SetParent(weaponModel.transform);
 
@@ -43,7 +44,10 @@ namespace DwarfEngine
 
         protected override void PrepareAttack()
         {
-            _model.PlayAnimation(weaponAttackAnim);
+            if (charge != null)
+            {
+                _model.PlayAnimation(weaponPrepareAttackAnim);
+            }
         }
 
         protected override void OnStopWeapon()
@@ -53,8 +57,9 @@ namespace DwarfEngine
 
         protected override IEnumerator Attack()
         {
+            _model.PlayAnimation(weaponAttackAnim);
+
             //Physics2D.OverlapCircleNonAlloc(_hitCircleOrigin.position, damageAreaRadius, hitObjects, hitMask);
-            
             Physics2D.OverlapCapsuleNonAlloc(
                 _hitCircleOrigin.position,
                 damageAreaSize,

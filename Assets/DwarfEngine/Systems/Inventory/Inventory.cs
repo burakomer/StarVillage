@@ -82,6 +82,11 @@ namespace DwarfEngine
         
         #region Abstract Methods
         public abstract bool PlaceItem(ItemAsset newItem);
+
+        /// <summary>
+        /// Called from the inventory UI. Executes the interaction of the item.
+        /// </summary>
+        /// <param name="slotIndex">Index of the slot that's interacted with.</param>
         public abstract void Interact(int slotIndex);
         public abstract void MoveItem(Inventory targetInventory, int startingIndex, int targetIndex); 
         #endregion

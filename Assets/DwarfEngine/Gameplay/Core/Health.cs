@@ -8,45 +8,89 @@ namespace DwarfEngine
 {
     public class Health : MonoBehaviour, IProgressSource
     {
+        /// <summary>
+        /// Global duration of the invincibility in seconds.
+        /// </summary>
         public const float INVINCIBILITY_DURATION = 0.5f;
 
+        /// <summary>
+        /// The current health of the object
+        /// </summary>
         public IntReactiveProperty currentHealth;
+
+        /// <summary>
+        /// The observable that broadcast the normalized value of the current health to its subscribers whenever the current health changes.
+        /// </summary>
         public Subject<float> currentHealthNormalized { get; private set; }
+
+        /// <summary>
+        /// True if the object is alive, false if dead.
+        /// </summary>
         public ReadOnlyReactiveProperty<bool> isAlive { get; protected set; }
 
         /// <summary>
-        /// Which direction the damage came from.
+        /// Called when the object receives damage. Other scripts can subscribe to this to execute feedbacks. Vector2 argument is the direction of the received attack. (Negative of the attackers direction.)
         /// </summary>
         public event System.Action<Vector2> OnDamage;
         
+        /// <summary>
+        /// Executed when the object is killed.
+        /// </summary>
         [Header("Events")]
         public UnityEvent OnKill;
 
         [Header("Properties")]
         [SerializeField] private bool invincible;
+
+        /// <summary>
+        /// Maximum health of the object.
+        /// </summary>
         public int maximumHealth;
+
+        /// <summary>
+        /// The visual model of the object.
+        /// </summary>
         public GameObject model;
 
         [Header("Death")]
         public bool destroyOnDeath;
+
+        /// <summary>
+        /// Time before the object is destroyed.
+        /// </summary>
         public float timeBeforeDestroy = 5f;
 
         //[Header("Feedbacks")]
         //public bool displayDamagePopup;
         //private ObjectPooler _pooler;
 
+        /// <summary>
+        /// If checked, a health bar is assigned to the object. 
+        /// If it exists in the scene with the targetBar name, that one is used. 
+        /// If not, a new one is created that is attached to the object.
+        /// </summary>
         [Header("Health Bar")]
         public bool hasHealthBar;
+        /// <summary>
+        /// Inspector field for the targetBar.
+        /// </summary>
         public string _targetBar;
+
+        /// <summary>
+        /// Inspector field for the barOffset.
+        /// </summary>
         public Vector3 _barOffset;
         public string targetBar => _targetBar;
         public Vector3 barOffset => _barOffset;
 
-        protected virtual void Start()
+        private void Start()
         {
-            currentHealth = new IntReactiveProperty(maximumHealth); // Set current health to max health
-            currentHealthNormalized = new Subject<float>();
+            if (currentHealth != null) // Meaning that it is not set in the inspector,
+            {
+                currentHealth = new IntReactiveProperty(maximumHealth); // Set current health to max health. 
+            }
 
+            currentHealthNormalized = new Subject<float>();
             currentHealth
                 .Select(health => (float) health / maximumHealth) // Connect normalized value to actual value
                 .Subscribe(currentHealthNormalized)
@@ -73,13 +117,23 @@ namespace DwarfEngine
             //}
         }
 
+        /// <summary>
+        /// Heals the object.
+        /// </summary>
+        /// <param name="healAmount">Amount to heal.</param>
         public virtual void Heal(int healAmount)
         {
             currentHealth.Value = Mathf.Min(currentHealth.Value + healAmount, maximumHealth);
         }
 
+        /// <summary>
+        /// Damages the object.
+        /// </summary>
+        /// <param name="invincibilityDuration">The duration of invincibility which prevents incoming damages.</param>
+        /// <param name="damageDealer">Source of the damage (the owner of the weapon).</param>
         public virtual void Damage(int damageAmount, float invincibilityDuration, GameObject damageDealer)
         {
+            // If the current health is already zero or the invincible is true, return.
             if (invincible)
             {
                 return;
@@ -90,12 +144,12 @@ namespace DwarfEngine
                 return;
             }
 
-            OnDamage?.Invoke((transform.position - damageDealer.transform.position).normalized);
-
-            //gameObject.transform.position += Vector3.zero;
+            // Substract the damage value from the current health.
             currentHealth.Value -= damageAmount;
 
-            // TODO : Resolve
+            OnDamage?.Invoke((transform.position - damageDealer.transform.position).normalized);
+
+            // TODO : Fix
             //if (displayDamagePopup)
             //{
             //    TextPopup popup = _pooler.GetPooledObject<TextPopup>();
@@ -112,9 +166,10 @@ namespace DwarfEngine
             //    }
             //}
 
-            // TODO : Resolve
+            // TODO : Fix
             //_animator?.SetTrigger(damagedParameter);
 
+            // If the current health becomes zero, execute Kill and return.
             if (currentHealth.Value <= 0)
             {
                 currentHealth.Value = 0;
@@ -123,6 +178,7 @@ namespace DwarfEngine
                 return;
             }
 
+            // Start invincibility if it's not zero.
             if (invincibilityDuration > 0)
             {
                 StartCoroutine(Invincibility(invincibilityDuration));
@@ -152,11 +208,17 @@ namespace DwarfEngine
             }
         }
 
+        /// <summary>
+        /// Prevents incoming damages.
+        /// </summary>
         public void DisableDamage()
         {
             invincible = true;
         }
 
+        /// <summary>
+        /// Incoming damages will be received normally.
+        /// </summary>
         public void EnableDamage()
         {
             invincible = false;
@@ -173,6 +235,7 @@ namespace DwarfEngine
             EnableDamage();
         }
 
+        [System.Obsolete("Use currentHealthNormalized")]
         public float GetHealthNormalized()
         {
             return (float)currentHealth.Value / maximumHealth;

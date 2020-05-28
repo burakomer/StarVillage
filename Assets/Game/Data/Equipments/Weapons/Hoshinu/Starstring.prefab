@@ -544,9 +544,11 @@ MonoBehaviour:
     baseValue: 0
   hitMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   weaponIdleAnim: 
+  weaponPrepareAttackAnim: 
   weaponAttackAnim: 
+  buttonReleased: 0
   aim: {fileID: 0}
   charge: {fileID: 0}
   resource: {fileID: 0}
@@ -589,6 +591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimType: 3
+  currentAngle: 0
   gripAngleOffset: 0
   gripLength: 10
 --- !u!114 &6687206520165937576

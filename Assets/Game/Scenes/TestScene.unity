@@ -974,7 +974,7 @@ GameObject:
   - component: {fileID: 153135477}
   - component: {fileID: 153135474}
   - component: {fileID: 153135475}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: BouncyCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2880,7 +2880,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 424150731}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3061,7 +3061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 466972436}
   - component: {fileID: 466972437}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6885,7 +6885,7 @@ GameObject:
   - component: {fileID: 1038423028}
   - component: {fileID: 1038423027}
   - component: {fileID: 1038423029}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}

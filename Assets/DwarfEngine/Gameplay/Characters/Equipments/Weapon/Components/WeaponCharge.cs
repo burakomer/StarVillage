@@ -44,10 +44,10 @@ namespace DwarfEngine
         }
 
         /// <summary>
-        /// Cancels charging. If already charged, returns false.
+        /// Cancels charging. If already charged, returns false. 
+        /// If prematureAttack is set to true, weapon is fired.
         /// </summary>
         /// /// <param name="StopWeapon">Method to call to completely cancel the weapon in case premature attack is false.</param>
-        /// <returns>True if cancel was successful.</returns>
         public bool CancelCharging(Action StopWeapon)
         {
             if (chargeCoroutine == null)
@@ -57,7 +57,7 @@ namespace DwarfEngine
 
             if (!cancellable)
             {
-                return true;
+                return true; // Returns true to prevent cancellation since it breaks the StopEquipment logic.
             }
 
             StopCoroutine(chargeCoroutine);

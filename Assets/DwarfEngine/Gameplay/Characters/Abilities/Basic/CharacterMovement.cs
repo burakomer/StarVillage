@@ -7,6 +7,9 @@ using UniRx.Triggers;
 
 public class CharacterMovement : CharacterAbility
 {
+    /// <summary>
+    /// Movement speed of the character.
+    /// </summary>
     public float moveSpeed;
 
     //private ReactiveProperty<Vector2> movement;

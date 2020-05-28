@@ -9,6 +9,7 @@ namespace DwarfEngine
     [RequireComponent(typeof(Character))]
     public abstract class CharacterBrain : MonoBehaviour
     {
+        
         public bool active;
         public CharacterInputs inputs;
         [HideInInspector] public Character character;

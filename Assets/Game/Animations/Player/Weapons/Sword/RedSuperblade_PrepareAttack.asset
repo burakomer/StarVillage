@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 721d51122a6c5174391d3163a5b2cad1, type: 3}
-  m_Name: RedSuperblade_Idle
+  m_Name: RedSuperblade_PrepareAttack
   m_EditorClassIdentifier: 
-  nodeName: WeaponIdle
+  nodeName: WeaponPrepareAttack
   framesPerSecond: 20
-  loop: 1
+  loop: 0
   sprites:
-  - {fileID: -5801870000378180303, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: 6230524607913200770, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}
+  - {fileID: 3494595240521401636, guid: b7f22b48cf4538044bfb67376e3212cb, type: 3}

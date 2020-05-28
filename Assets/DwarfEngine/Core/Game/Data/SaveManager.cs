@@ -4,10 +4,22 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DwarfEngine
 {
+    /// <summary>
+    /// Handles saving and loading.
+    /// </summary>
     public static class SaveManager
     {
+        /// <summary>
+        /// The default save path. In development phase, this is in C:\Users\'user_file'\AppData\LocalLow\BurakOmer\Woof of the Stars\saves
+        /// </summary>
         public static string SavePath = Application.persistentDataPath + "/saves/";
 
+        /// <summary>
+        /// Saves the object in JSON with given type.
+        /// </summary>
+        /// <typeparam name="T">Object type to be saved.</typeparam>
+        /// <param name="key">The file name without extension.</param>
+        /// <returns></returns>
         public static string Save<T>(T objectToSave, string key)
         {
             Directory.CreateDirectory(SavePath);
@@ -19,6 +31,12 @@ namespace DwarfEngine
             return json;
         }
 
+        /// <summary>
+        /// Loads the file with given key and returns it as an object of given type.
+        /// </summary>
+        /// <typeparam name="T">Object type to be loaded as.</typeparam>
+        /// <param name="key">The file name without extension.</param>
+        /// <returns></returns>
         public static T Load<T>(string key)
         {
             T returnValue = default;
@@ -28,6 +46,11 @@ namespace DwarfEngine
             return returnValue;
         }
 
+        /// <summary>
+        /// Checks if the save file exists with the given key.
+        /// </summary>
+        /// <param name="key">The file name without extension.</param>
+        /// <returns></returns>
         public static bool SaveExists(string key)
         {
             return File.Exists(SavePath + key + ".json");

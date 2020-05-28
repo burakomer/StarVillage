@@ -4848,6 +4848,7 @@ GameObject:
   - component: {fileID: 4071927164928867495}
   - component: {fileID: 774156319508622026}
   - component: {fileID: 582215297514378575}
+  - component: {fileID: -6167848425326992700}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -4930,6 +4931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   character: {fileID: 0}
+  pinput: {fileID: 0}
   handContainer: {fileID: 4071927165318054078}
 --- !u!114 &4071927164928867549
 MonoBehaviour:
@@ -4945,12 +4947,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth:
     value: 0
-  invincible: 0
-  maximumHealth: 50
-  model: {fileID: 0}
   OnKill:
     m_PersistentCalls:
       m_Calls: []
+  invincible: 0
+  maximumHealth: 50
+  model: {fileID: 0}
   destroyOnDeath: 0
   timeBeforeDestroy: 5
   hasHealthBar: 0
@@ -5052,6 +5054,20 @@ MonoBehaviour:
   hasResourceBar: 1
   _targetBar: StarPower
   _barOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-6167848425326992700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4071927164928867544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c12ff761dfcfa444c84e25f11589d44e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bow: {fileID: 11400000, guid: d700df8b071651a46814c09bc1dca17c, type: 2}
+  sword: {fileID: 11400000, guid: c2beeb28f5c7997468ddd9c12338399c, type: 2}
 --- !u!1 &4071927165318054079
 GameObject:
   m_ObjectHideFlags: 0
@@ -5133,7 +5149,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 489b063039e621b438f8728cc021cdd6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -46,8 +46,12 @@ namespace DwarfEngine
 					return Vector2.zero;
 			}
 		}
+        public bool GetWeaponSwitch()
+        {
+            return playerControls.Controls.Mech.triggered;
+        }
 
-		public float GetInteract()
+        public float GetInteract()
 		{
 			return playerControls.Controls.Attack.ReadValue<float>();
 		}

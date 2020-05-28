@@ -158,7 +158,7 @@ namespace DwarfEngine
         /// </summary>
         public void Destroy()
         {
-            Object.Destroy(_container);
+            Object.Destroy(_container.gameObject);
         }
 
         public IEnumerator GetEnumerator()

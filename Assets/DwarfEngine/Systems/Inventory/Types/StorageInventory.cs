@@ -4,8 +4,11 @@ using System.Linq;
 
 namespace DwarfEngine
 {
-    public class StorageInventory : Inventory, IBasicInventory
+    public class StorageInventory : Inventory, IStorageInventory
     {
+        /// <summary>
+        /// List of the connected inventories.
+        /// </summary>
         public List<Inventory> connectedInventories { get; private set; }
 
         /// <summary>
@@ -26,9 +29,9 @@ namespace DwarfEngine
 
             connectedInventories.Add(inventoryToConnect);
 
-            if (inventoryToConnect is IBasicInventory)
+            if (inventoryToConnect is IStorageInventory)
             {
-                (inventoryToConnect as IBasicInventory).Connect(this);
+                (inventoryToConnect as IStorageInventory).Connect(this);
             }
             else if (inventoryToConnect is ISecondaryInventory)
             {
@@ -36,6 +39,10 @@ namespace DwarfEngine
             }
         }
 
+        /// <summary>
+        /// Return a slot index that's empty. Return null if there's not any empty slot.
+        /// </summary>
+        /// <returns></returns>
         public int? GetEmptyIndex()
         {
             for (int i = 0; i < items.Capacity; i++)
@@ -53,7 +60,7 @@ namespace DwarfEngine
         {
             if (items[slotIndex] is IEquipmentItem)
             {
-                var targetInv = connectedInventories
+                Inventory targetInv = connectedInventories
                     .Find(i => i.inventoryName == (items[slotIndex] as IEquipmentItem).TargetInventory);
                 targetInv.PlaceItem(items[slotIndex]);
             }

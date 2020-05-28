@@ -3,6 +3,10 @@ using System.Collections;
 
 namespace DwarfEngine
 {
+    /// <summary>
+    /// Used to equip
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class EquipmentInventory<T> : Inventory, ISecondaryInventory where T : IEquipmentItem
     {
         public StorageInventory mainInventory { get; set; }
@@ -63,9 +67,6 @@ namespace DwarfEngine
             return false;
         }
 
-        /// <summary>
-        /// Double clicking to an equipment inventory slot unequips the item.
-        /// </summary>
         public override void Interact(int slotIndex)
         {
             if (mainInventory.PlaceItem(items[slotIndex])) // Try to add the equipment back to the inventory

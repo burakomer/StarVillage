@@ -5,10 +5,20 @@ using UnityEngine;
 
 namespace DwarfEngine
 {
+    /// <summary>
+    /// An ability that a character can use. 
+    /// Provides easy access to the inputs and the animator of the character.
+    /// </summary>
     public abstract class CharacterAbility : MonoBehaviour
     {
+        /// <summary>
+        /// When set to false, UpdateAbility and UpdateAbilityFixed will not execute.
+        /// </summary>
         public bool active = true;
 
+        /// <summary>
+        /// Reference to the Character component.
+        /// </summary>
         protected Character _character;
 
         private void Awake()
@@ -26,7 +36,7 @@ namespace DwarfEngine
             Init();
 
             this.UpdateAsObservable()
-                .Where(_ => _character.isAlive)
+                .Where(_ => _character.isAlive && active)
                 .Subscribe(_ =>
                 {
                     UpdateAbility();
@@ -34,7 +44,7 @@ namespace DwarfEngine
                 .AddTo(this);
 
             this.FixedUpdateAsObservable()
-                .Where(_ => _character.isAlive)
+                .Where(_ => _character.isAlive && active)
                 .Subscribe(_ =>
                 {
                     UpdateAbilityFixed();
@@ -44,16 +54,25 @@ namespace DwarfEngine
 
         #region Virtual Methods
 
+        /// <summary>
+        /// Executed in Awake.
+        /// </summary>
         protected virtual void PreInit()
         {
 
         }
 
+        /// <summary>
+        /// Executed in Start, after input and animator logic.
+        /// </summary>
         protected virtual void Init()
         {
 
         }
 
+        /// <summary>
+        /// Wire the inputs to actions here.
+        /// </summary>
         protected virtual void SetInputLogic(CharacterInputs inputs)
         {
 
@@ -75,11 +94,17 @@ namespace DwarfEngine
 
         }
 
+        /// <summary>
+        /// Called every frame.
+        /// </summary>
         protected virtual void UpdateAbility()
         {
 
         }
 
+        /// <summary>
+        /// Called a fixed amount of time. Good for physics stuff.
+        /// </summary>
         protected virtual void UpdateAbilityFixed()
         {
 

@@ -41,6 +41,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mech"",
+                    ""type"": ""Button"",
+                    ""id"": ""5421a6b4-137f-45c0-9306-091d654d97a9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -208,6 +216,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cf4d185-9ec8-4f59-80dc-8b049a14d7c5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mech"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -231,6 +250,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Controls_Move = m_Controls.FindAction("Move", throwIfNotFound: true);
         m_Controls_Rotate = m_Controls.FindAction("Rotate", throwIfNotFound: true);
         m_Controls_Attack = m_Controls.FindAction("Attack", throwIfNotFound: true);
+        m_Controls_Mech = m_Controls.FindAction("Mech", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -283,6 +303,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Controls_Move;
     private readonly InputAction m_Controls_Rotate;
     private readonly InputAction m_Controls_Attack;
+    private readonly InputAction m_Controls_Mech;
     public struct ControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -290,6 +311,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Controls_Move;
         public InputAction @Rotate => m_Wrapper.m_Controls_Rotate;
         public InputAction @Attack => m_Wrapper.m_Controls_Attack;
+        public InputAction @Mech => m_Wrapper.m_Controls_Mech;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +330,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnAttack;
+                @Mech.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnMech;
+                @Mech.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnMech;
+                @Mech.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnMech;
             }
             m_Wrapper.m_ControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -321,6 +346,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Mech.started += instance.OnMech;
+                @Mech.performed += instance.OnMech;
+                @Mech.canceled += instance.OnMech;
             }
         }
     }
@@ -339,5 +367,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnMech(InputAction.CallbackContext context);
     }
 }

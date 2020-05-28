@@ -18,10 +18,18 @@ MonoBehaviour:
       array:
       - WeaponAttack
       - WeaponIdle
+      - WeaponPrepareAttack
   - node: {fileID: 11400000, guid: 16d4b6e245eabca478e6aae0c26ca9b4, type: 2}
     transitions:
       array:
       - WeaponIdle
       - WeaponAttack
+      - WeaponPrepareAttack
+  - node: {fileID: 11400000, guid: afc8d7a7ea2cd384eba68a2e99395e57, type: 2}
+    transitions:
+      array:
+      - WeaponIdle
+      - WeaponAttack
+      - WeaponPrepareAttack
   blendParameters:
     array: []

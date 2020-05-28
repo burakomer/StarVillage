@@ -32,6 +32,8 @@ namespace DwarfEngine
         private void Start()
         {
             _collider = GetComponent<Collider2D>();
+            _collider.isTrigger = true;
+
             //_rb = GetComponent<Rigidbody2D>();
 
             //if (impactFeedback != null)
@@ -72,18 +74,25 @@ namespace DwarfEngine
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
+            if (hitMask == (hitMask | (1 << collision.gameObject.layer)))
             {
-                return;
+                Health _health = collision.GetComponent<Health>();
+                if (_health != null)
+                {
+                    _health.Damage(damage.IntValue, invincibilityDuration, gameObject);
+                }
+                OnFeedbackEnd();
             }
 
+            /*
             Collider2D[] hitObjects = Physics2D.OverlapCircleAll(impactPoint.position, impactRadius, hitMask);
             if (hitObjects.Length > 0)
             {
                 foreach (Collider2D hitObj in hitObjects)
                 {
+                    Debug.Log(hitObj.name);
                     Health _health = hitObj.GetComponent<Health>();
-                    if (_health != null)
+                    if (_health != null) 
                     {
                         _health.Damage(damage.IntValue, invincibilityDuration, gameObject);
                     }
@@ -101,6 +110,7 @@ namespace DwarfEngine
                 //impactFeedback.Initiate(feedbackTime);
                 OnFeedbackEnd();
             }
+            */
         }
 
         private void OnFeedbackEnd()

@@ -7,8 +7,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace DwarfEngine
 {
-	public enum ItemType { Default, Consumable, Equipment }
-
+	/// <summary>
+	/// The foundation of the ItemAsset class.
+	/// </summary>
 	public abstract class ItemAsset : ScriptableObject
 	{
 		/// <summary>
@@ -16,19 +17,27 @@ namespace DwarfEngine
 		/// </summary>
 		public int id;
 
+		/// <summary>
+		/// The item name that will be displayed in the game.
+		/// </summary>
 		public string itemName;
 		[Multiline] public string itemDescription;
 		public Sprite icon;
 	}
 
 	/// <summary>
-	/// Base class for items.
+	/// The base class for inventory items.
 	/// </summary>
 	public abstract class ItemAsset<T> : ItemAsset where T : MonoBehaviour
 	{
-		public AssetReference itemObjectReference;
+		/// <summary>
+		/// The prefab object of the item. Must be set in the inspector.
+		/// </summary>
 		public T itemObject;
 
+		// For later
+		//public AssetReference itemObjectReference;
+		/*
 		public IEnumerator GetObject(Action<GameObject> OnSuccessCallback)
 		{
 			var asyncOp = itemObjectReference.LoadAssetAsync<GameObject>();
@@ -40,5 +49,6 @@ namespace DwarfEngine
 				OnSuccessCallback(asyncOp.Result);
 			}
 		}
+		*/
 	}
 }

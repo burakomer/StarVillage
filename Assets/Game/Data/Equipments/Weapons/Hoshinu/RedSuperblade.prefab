@@ -55,9 +55,11 @@ MonoBehaviour:
     baseValue: 0
   hitMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 2048
   weaponIdleAnim: WeaponIdle
+  weaponPrepareAttackAnim: WeaponPrepareAttack
   weaponAttackAnim: WeaponAttack
+  buttonReleased: 0
   aim: {fileID: 0}
   charge: {fileID: 0}
   resource: {fileID: 0}
@@ -77,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83e44f38ed632b4d88d1689ce326b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 2
+  attackTime: 1
 --- !u!114 &2419750428927762853
 MonoBehaviour:
   m_ObjectHideFlags: 0

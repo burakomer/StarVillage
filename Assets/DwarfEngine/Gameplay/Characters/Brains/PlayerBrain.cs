@@ -7,11 +7,19 @@ namespace DwarfEngine
 {
     public class PlayerBrain : CharacterBrain
     {
+
+        public PlayerInputs pinput;
         public Transform handContainer;
 
         protected override void SetInputSources()
         {
-            inputs.movement = this.UpdateAsObservable()
+            pinput = new PlayerInputs();
+            pinput.weaponSwitch = this.UpdateAsObservable()
+                .Select(_ => InputManager.Instance.GetWeaponSwitch());
+            
+
+
+                inputs.movement = this.UpdateAsObservable()
                 .Select(_ => InputManager.Instance.GetMovement());
 
             inputs.look = this.UpdateAsObservable()
